@@ -32,9 +32,9 @@ esoterico, poco documentato e privo delle strutture che caratterizzano i linguag
 
 Che gli attuali strumenti di coding agentico siano in grado di generare codice funzionante in linguaggi di programmazione di larga diffusione, di cui esistono milioni di esempi in rete, entrati nei percorsi di addestramento dei LLM, è un fatto noto e scontato.
 
-Ma se decidessimo di utilizzare un linguaggio assolutamente esoterico, praticamente mai utilizzato in progetti reali, dalla sintassi bizzarra e fortemente fuorviante, tanto da far sembrare il codice una vera *supercazzola*, come se la caverebbe un harness come **Claude Code**.
+Ma se decidessimo di utilizzare un linguaggio assolutamente esoterico, praticamente mai utilizzato in progetti reali, dalla sintassi bizzarra e fortemente fuorviante, tanto da far sembrare il codice una vera *supercazzola*, come se la caverebbe un harness come **Claude Code**?
 
-Questo repository contiuene il risultato di un siffatto esperimento.
+Questo repository contiene il risultato di un siffatto esperimento.
 
 Il vincolo progettuale è stato l'assoluta **purezza**: tutta la logica si trova in [`src/antani.mc`](src/antani.mc)
 ed è compilata con il compilatore ufficiale di Monicelli, `mcc`. Nessun wrapper,
@@ -171,9 +171,6 @@ riferimento del compilatore Monicelli, e il progetto usa strumenti POSIX (`make`
    git clone https://github.com/FastalGroup/antani.git
    cd antani
    ```
-
-   Il repository è privato: servono credenziali GitHub con accesso a
-   FastalGroup, per esempio con `gh auth login` o un personal access token.
 
 3. **Proseguire con i passi di [Linux e WSL](#linux-e-wsl-ubuntu)**, tutti nel
    terminale Ubuntu.
