@@ -201,6 +201,12 @@ blinda la supercazzola msgInvalido o scherziamo?
   brematurata la supercazzola scrivi8 con 111, 109, 101, 32, 115, 99, 97, 114 o scherziamo?
   brematurata la supercazzola scrivi8 con 116, 97, 116, 111, 46, 10, 0, 0 o scherziamo?
 
+bituma 'Lista cancellata.\n'
+blinda la supercazzola msgCancellata o scherziamo?
+  brematurata la supercazzola scrivi8 con 76, 105, 115, 116, 97, 32, 99, 97 o scherziamo?
+  brematurata la supercazzola scrivi8 con 110, 99, 101, 108, 108, 97, 116, 97 o scherziamo?
+  brematurata la supercazzola scrivi8 con 46, 10, 0, 0, 0, 0, 0, 0 o scherziamo?
+
 bituma Chiave di collazione: maiuscole, minuscole e accentate valgono la lettera base (a=10 ... z=35).
 blinda la supercazzola Necchi rango con codice Necchi o scherziamo?
   voglio r, Necchi come se fosse codice
@@ -353,6 +359,8 @@ bituma [SEZIONE: azione]
           o magari 79: daOrdinare come se fosse 1 daStampare come se fosse 1
           o magari 108: daStampare come se fosse 1
           o magari 76: daStampare come se fosse 1
+          o magari 99: n come se fosse 0 brematurata la supercazzola msgCancellata o scherziamo?
+          o magari 67: n come se fosse 0 brematurata la supercazzola msgCancellata o scherziamo?
           o magari 113: brematurata la supercazzola msgArrivederci o scherziamo? continua come se fosse 0
           o magari 81: brematurata la supercazzola msgArrivederci o scherziamo? continua come se fosse 0
           o tarapia tapioco: brematurata la supercazzola msgSconosciuto o scherziamo?
