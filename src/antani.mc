@@ -201,6 +201,49 @@ blinda la supercazzola msgInvalido o scherziamo?
   brematurata la supercazzola scrivi8 con 111, 109, 101, 32, 115, 99, 97, 114 o scherziamo?
   brematurata la supercazzola scrivi8 con 116, 97, 116, 111, 46, 10, 0, 0 o scherziamo?
 
+bituma Chiave di collazione: maiuscole, minuscole e accentate valgono la lettera base (a=10 ... z=35).
+blinda la supercazzola Necchi rango con codice Necchi o scherziamo?
+  voglio r, Necchi come se fosse codice
+  che cos'è codice?
+    minore di 40:
+    o magari minore di 70: r come se fosse codice meno 30
+    o magari 70: r come se fosse 10
+    o magari 80: r come se fosse 10
+    o magari 71: r come se fosse 14
+    o magari 72: r come se fosse 14
+    o magari 81: r come se fosse 14
+    o magari 82: r come se fosse 14
+    o magari 73: r come se fosse 18
+    o magari 83: r come se fosse 18
+    o magari 74: r come se fosse 24
+    o magari 84: r come se fosse 24
+    o magari 75: r come se fosse 30
+    o magari 85: r come se fosse 30
+  e velocità di esecuzione
+  vaffanzum r!
+
+bituma 1 se il nome X viene strettamente prima del nome Y, altrimenti 0 (a parita' resta 0: ordinamento stabile).
+blinda la supercazzola Necchi precede con x1 Necchi, x2 Necchi, x3 Necchi, x4 Necchi, x5 Necchi, y1 Necchi, y2 Necchi, y3 Necchi, y4 Necchi, y5 Necchi o scherziamo?
+  voglio p, Necchi come se fosse 0
+  voglio esito, Necchi come se fosse 0
+  voglio deciso, Necchi come se fosse 0
+  voglio rx, Necchi come se fosse 0
+  voglio ry, Necchi come se fosse 0
+  stuzzica
+    rx come se fosse brematurata la supercazzola carattere con x1, x2, x3, x4, x5, p o scherziamo?
+    rx come se fosse brematurata la supercazzola rango con rx o scherziamo?
+    ry come se fosse brematurata la supercazzola carattere con y1, y2, y3, y4, y5, p o scherziamo?
+    ry come se fosse brematurata la supercazzola rango con ry o scherziamo?
+    che cos'è rx?
+      minore di ry: esito come se fosse 1 deciso come se fosse 1
+      o magari maggiore di ry: deciso come se fosse 1
+      o magari 0: deciso come se fosse 1
+    e velocità di esecuzione
+    p come se fosse p più 1
+    che cos'è p? 20: deciso come se fosse 1 e velocità di esecuzione
+  e brematura anche, se deciso minore di 1
+  vaffanzum esito!
+
 Lei ha clacsonato
 bituma [SEZIONE: dichiarazioni]
 bituma I 16 slot: slot k = parole s<k>w1..s<k>w5.
@@ -306,7 +349,9 @@ bituma [SEZIONE: azione]
     che cos'è comando?
       1:
         che cos'è lettera?
-          108: daStampare come se fosse 1
+          111: daOrdinare come se fosse 1 daStampare come se fosse 1
+          o magari 79: daOrdinare come se fosse 1 daStampare come se fosse 1
+          o magari 108: daStampare come se fosse 1
           o magari 76: daStampare come se fosse 1
           o magari 113: brematurata la supercazzola msgArrivederci o scherziamo? continua come se fosse 0
           o magari 81: brematurata la supercazzola msgArrivederci o scherziamo? continua come se fosse 0
@@ -349,8 +394,109 @@ bituma [SEZIONE: azione]
 bituma [SEZIONE: fine input]
     che cos'è fineInput?
       1:
-        che cos'è continua? 1: brematurata la supercazzola aCapo o scherziamo? e velocità di esecuzione
+        che cos'è continua?
+          1:
+            brematurata la supercazzola aCapo o scherziamo?
+            che cos'è n? maggiore di 0: daOrdinare come se fosse 1 daStampare come se fosse 1 e velocità di esecuzione
+        e velocità di esecuzione
         continua come se fosse 0
+    e velocità di esecuzione
+bituma [SEZIONE: ordinamento]
+bituma Bubble sort stabile: si scambia solo se il successivo precede strettamente il corrente.
+    che cos'è daOrdinare?
+      1:
+        che cos'è n?
+          maggiore di 1:
+            limite come se fosse n meno 1
+            stuzzica
+              scambiato come se fosse 0
+              j come se fosse 0
+              stuzzica
+                idx come se fosse j
+                che cos'è idx?
+                  0: a1 come se fosse s0w1 a2 come se fosse s0w2 a3 come se fosse s0w3 a4 come se fosse s0w4 a5 come se fosse s0w5
+                  o magari 1: a1 come se fosse s1w1 a2 come se fosse s1w2 a3 come se fosse s1w3 a4 come se fosse s1w4 a5 come se fosse s1w5
+                  o magari 2: a1 come se fosse s2w1 a2 come se fosse s2w2 a3 come se fosse s2w3 a4 come se fosse s2w4 a5 come se fosse s2w5
+                  o magari 3: a1 come se fosse s3w1 a2 come se fosse s3w2 a3 come se fosse s3w3 a4 come se fosse s3w4 a5 come se fosse s3w5
+                  o magari 4: a1 come se fosse s4w1 a2 come se fosse s4w2 a3 come se fosse s4w3 a4 come se fosse s4w4 a5 come se fosse s4w5
+                  o magari 5: a1 come se fosse s5w1 a2 come se fosse s5w2 a3 come se fosse s5w3 a4 come se fosse s5w4 a5 come se fosse s5w5
+                  o magari 6: a1 come se fosse s6w1 a2 come se fosse s6w2 a3 come se fosse s6w3 a4 come se fosse s6w4 a5 come se fosse s6w5
+                  o magari 7: a1 come se fosse s7w1 a2 come se fosse s7w2 a3 come se fosse s7w3 a4 come se fosse s7w4 a5 come se fosse s7w5
+                  o magari 8: a1 come se fosse s8w1 a2 come se fosse s8w2 a3 come se fosse s8w3 a4 come se fosse s8w4 a5 come se fosse s8w5
+                  o magari 9: a1 come se fosse s9w1 a2 come se fosse s9w2 a3 come se fosse s9w3 a4 come se fosse s9w4 a5 come se fosse s9w5
+                  o magari 10: a1 come se fosse s10w1 a2 come se fosse s10w2 a3 come se fosse s10w3 a4 come se fosse s10w4 a5 come se fosse s10w5
+                  o magari 11: a1 come se fosse s11w1 a2 come se fosse s11w2 a3 come se fosse s11w3 a4 come se fosse s11w4 a5 come se fosse s11w5
+                  o magari 12: a1 come se fosse s12w1 a2 come se fosse s12w2 a3 come se fosse s12w3 a4 come se fosse s12w4 a5 come se fosse s12w5
+                  o magari 13: a1 come se fosse s13w1 a2 come se fosse s13w2 a3 come se fosse s13w3 a4 come se fosse s13w4 a5 come se fosse s13w5
+                  o magari 14: a1 come se fosse s14w1 a2 come se fosse s14w2 a3 come se fosse s14w3 a4 come se fosse s14w4 a5 come se fosse s14w5
+                  o magari 15: a1 come se fosse s15w1 a2 come se fosse s15w2 a3 come se fosse s15w3 a4 come se fosse s15w4 a5 come se fosse s15w5
+                e velocità di esecuzione
+                idx come se fosse j più 1
+                che cos'è idx?
+                  0: b1 come se fosse s0w1 b2 come se fosse s0w2 b3 come se fosse s0w3 b4 come se fosse s0w4 b5 come se fosse s0w5
+                  o magari 1: b1 come se fosse s1w1 b2 come se fosse s1w2 b3 come se fosse s1w3 b4 come se fosse s1w4 b5 come se fosse s1w5
+                  o magari 2: b1 come se fosse s2w1 b2 come se fosse s2w2 b3 come se fosse s2w3 b4 come se fosse s2w4 b5 come se fosse s2w5
+                  o magari 3: b1 come se fosse s3w1 b2 come se fosse s3w2 b3 come se fosse s3w3 b4 come se fosse s3w4 b5 come se fosse s3w5
+                  o magari 4: b1 come se fosse s4w1 b2 come se fosse s4w2 b3 come se fosse s4w3 b4 come se fosse s4w4 b5 come se fosse s4w5
+                  o magari 5: b1 come se fosse s5w1 b2 come se fosse s5w2 b3 come se fosse s5w3 b4 come se fosse s5w4 b5 come se fosse s5w5
+                  o magari 6: b1 come se fosse s6w1 b2 come se fosse s6w2 b3 come se fosse s6w3 b4 come se fosse s6w4 b5 come se fosse s6w5
+                  o magari 7: b1 come se fosse s7w1 b2 come se fosse s7w2 b3 come se fosse s7w3 b4 come se fosse s7w4 b5 come se fosse s7w5
+                  o magari 8: b1 come se fosse s8w1 b2 come se fosse s8w2 b3 come se fosse s8w3 b4 come se fosse s8w4 b5 come se fosse s8w5
+                  o magari 9: b1 come se fosse s9w1 b2 come se fosse s9w2 b3 come se fosse s9w3 b4 come se fosse s9w4 b5 come se fosse s9w5
+                  o magari 10: b1 come se fosse s10w1 b2 come se fosse s10w2 b3 come se fosse s10w3 b4 come se fosse s10w4 b5 come se fosse s10w5
+                  o magari 11: b1 come se fosse s11w1 b2 come se fosse s11w2 b3 come se fosse s11w3 b4 come se fosse s11w4 b5 come se fosse s11w5
+                  o magari 12: b1 come se fosse s12w1 b2 come se fosse s12w2 b3 come se fosse s12w3 b4 come se fosse s12w4 b5 come se fosse s12w5
+                  o magari 13: b1 come se fosse s13w1 b2 come se fosse s13w2 b3 come se fosse s13w3 b4 come se fosse s13w4 b5 come se fosse s13w5
+                  o magari 14: b1 come se fosse s14w1 b2 come se fosse s14w2 b3 come se fosse s14w3 b4 come se fosse s14w4 b5 come se fosse s14w5
+                  o magari 15: b1 come se fosse s15w1 b2 come se fosse s15w2 b3 come se fosse s15w3 b4 come se fosse s15w4 b5 come se fosse s15w5
+                e velocità di esecuzione
+                prima come se fosse brematurata la supercazzola precede con b1, b2, b3, b4, b5, a1, a2, a3, a4, a5 o scherziamo?
+                che cos'è prima?
+                  1:
+                    idx come se fosse j
+                    che cos'è idx?
+                      0: s0w1 come se fosse b1 s0w2 come se fosse b2 s0w3 come se fosse b3 s0w4 come se fosse b4 s0w5 come se fosse b5
+                      o magari 1: s1w1 come se fosse b1 s1w2 come se fosse b2 s1w3 come se fosse b3 s1w4 come se fosse b4 s1w5 come se fosse b5
+                      o magari 2: s2w1 come se fosse b1 s2w2 come se fosse b2 s2w3 come se fosse b3 s2w4 come se fosse b4 s2w5 come se fosse b5
+                      o magari 3: s3w1 come se fosse b1 s3w2 come se fosse b2 s3w3 come se fosse b3 s3w4 come se fosse b4 s3w5 come se fosse b5
+                      o magari 4: s4w1 come se fosse b1 s4w2 come se fosse b2 s4w3 come se fosse b3 s4w4 come se fosse b4 s4w5 come se fosse b5
+                      o magari 5: s5w1 come se fosse b1 s5w2 come se fosse b2 s5w3 come se fosse b3 s5w4 come se fosse b4 s5w5 come se fosse b5
+                      o magari 6: s6w1 come se fosse b1 s6w2 come se fosse b2 s6w3 come se fosse b3 s6w4 come se fosse b4 s6w5 come se fosse b5
+                      o magari 7: s7w1 come se fosse b1 s7w2 come se fosse b2 s7w3 come se fosse b3 s7w4 come se fosse b4 s7w5 come se fosse b5
+                      o magari 8: s8w1 come se fosse b1 s8w2 come se fosse b2 s8w3 come se fosse b3 s8w4 come se fosse b4 s8w5 come se fosse b5
+                      o magari 9: s9w1 come se fosse b1 s9w2 come se fosse b2 s9w3 come se fosse b3 s9w4 come se fosse b4 s9w5 come se fosse b5
+                      o magari 10: s10w1 come se fosse b1 s10w2 come se fosse b2 s10w3 come se fosse b3 s10w4 come se fosse b4 s10w5 come se fosse b5
+                      o magari 11: s11w1 come se fosse b1 s11w2 come se fosse b2 s11w3 come se fosse b3 s11w4 come se fosse b4 s11w5 come se fosse b5
+                      o magari 12: s12w1 come se fosse b1 s12w2 come se fosse b2 s12w3 come se fosse b3 s12w4 come se fosse b4 s12w5 come se fosse b5
+                      o magari 13: s13w1 come se fosse b1 s13w2 come se fosse b2 s13w3 come se fosse b3 s13w4 come se fosse b4 s13w5 come se fosse b5
+                      o magari 14: s14w1 come se fosse b1 s14w2 come se fosse b2 s14w3 come se fosse b3 s14w4 come se fosse b4 s14w5 come se fosse b5
+                      o magari 15: s15w1 come se fosse b1 s15w2 come se fosse b2 s15w3 come se fosse b3 s15w4 come se fosse b4 s15w5 come se fosse b5
+                    e velocità di esecuzione
+                    idx come se fosse j più 1
+                    che cos'è idx?
+                      0: s0w1 come se fosse a1 s0w2 come se fosse a2 s0w3 come se fosse a3 s0w4 come se fosse a4 s0w5 come se fosse a5
+                      o magari 1: s1w1 come se fosse a1 s1w2 come se fosse a2 s1w3 come se fosse a3 s1w4 come se fosse a4 s1w5 come se fosse a5
+                      o magari 2: s2w1 come se fosse a1 s2w2 come se fosse a2 s2w3 come se fosse a3 s2w4 come se fosse a4 s2w5 come se fosse a5
+                      o magari 3: s3w1 come se fosse a1 s3w2 come se fosse a2 s3w3 come se fosse a3 s3w4 come se fosse a4 s3w5 come se fosse a5
+                      o magari 4: s4w1 come se fosse a1 s4w2 come se fosse a2 s4w3 come se fosse a3 s4w4 come se fosse a4 s4w5 come se fosse a5
+                      o magari 5: s5w1 come se fosse a1 s5w2 come se fosse a2 s5w3 come se fosse a3 s5w4 come se fosse a4 s5w5 come se fosse a5
+                      o magari 6: s6w1 come se fosse a1 s6w2 come se fosse a2 s6w3 come se fosse a3 s6w4 come se fosse a4 s6w5 come se fosse a5
+                      o magari 7: s7w1 come se fosse a1 s7w2 come se fosse a2 s7w3 come se fosse a3 s7w4 come se fosse a4 s7w5 come se fosse a5
+                      o magari 8: s8w1 come se fosse a1 s8w2 come se fosse a2 s8w3 come se fosse a3 s8w4 come se fosse a4 s8w5 come se fosse a5
+                      o magari 9: s9w1 come se fosse a1 s9w2 come se fosse a2 s9w3 come se fosse a3 s9w4 come se fosse a4 s9w5 come se fosse a5
+                      o magari 10: s10w1 come se fosse a1 s10w2 come se fosse a2 s10w3 come se fosse a3 s10w4 come se fosse a4 s10w5 come se fosse a5
+                      o magari 11: s11w1 come se fosse a1 s11w2 come se fosse a2 s11w3 come se fosse a3 s11w4 come se fosse a4 s11w5 come se fosse a5
+                      o magari 12: s12w1 come se fosse a1 s12w2 come se fosse a2 s12w3 come se fosse a3 s12w4 come se fosse a4 s12w5 come se fosse a5
+                      o magari 13: s13w1 come se fosse a1 s13w2 come se fosse a2 s13w3 come se fosse a3 s13w4 come se fosse a4 s13w5 come se fosse a5
+                      o magari 14: s14w1 come se fosse a1 s14w2 come se fosse a2 s14w3 come se fosse a3 s14w4 come se fosse a4 s14w5 come se fosse a5
+                      o magari 15: s15w1 come se fosse a1 s15w2 come se fosse a2 s15w3 come se fosse a3 s15w4 come se fosse a4 s15w5 come se fosse a5
+                    e velocità di esecuzione
+                    scambiato come se fosse 1
+                e velocità di esecuzione
+                j come se fosse j più 1
+              e brematura anche, se j minore di limite
+            e brematura anche, se scambiato maggiore di 0
+        e velocità di esecuzione
     e velocità di esecuzione
 bituma [SEZIONE: stampa]
     che cos'è daStampare?
