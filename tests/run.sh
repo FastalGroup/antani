@@ -4,6 +4,7 @@ cd "$(dirname "$0")/.." || exit 1
 pass=0
 fail=0
 for input in tests/${1:-}*.in; do
+  [ -e "$input" ] || continue
   expected="${input%.in}.out"
   actual=$(mktemp)
   ./antani < "$input" > "$actual"

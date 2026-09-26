@@ -22,14 +22,19 @@ blinda la supercazzola aCapo o scherziamo?
   brematurata la supercazzola scrivi con 10 o scherziamo?
 
 bituma Legge un byte da stdin: 0-255, oppure 256 a fine input.
+bituma car parte da -1 (mai un byte vero): a EOF resta invariato, e -1+256=255 segnala fine input;
+bituma cosi' il byte 0 (NUL) rimane un carattere ordinario. 0xFF non compare mai in UTF-8 valido,
+bituma quindi usarlo come sentinella e' accettabile.
 blinda la supercazzola Necchi leggi o scherziamo?
-  voglio car, Mascetti come se fosse 0
+  voglio car, Mascetti come se fosse -1
   voglio valore, Necchi come se fosse 0
   mi porga car
   valore come se fosse car
   che cos'è valore?
     minore di 0: valore come se fosse valore più 256
-    o magari 0: valore come se fosse 256
+  e velocità di esecuzione
+  che cos'è valore?
+    255: valore come se fosse 256
   e velocità di esecuzione
   vaffanzum valore!
 
@@ -105,6 +110,7 @@ blinda la supercazzola Necchi decodifica con byte Necchi o scherziamo?
     o magari minore di 97: codice come se fosse 0
     o magari minore di 123: codice come se fosse byte meno 57
     o magari 195:
+bituma il secondo byte viene comunque consumato dallo stream anche quando non e' una accentata nota: il nome intero va scartato (non solo il carattere).
       seconda come se fosse brematurata la supercazzola leggi o scherziamo?
       che cos'è seconda?
         160: codice come se fosse 70
@@ -279,6 +285,7 @@ bituma I 16 slot: slot k = parole s<k>w1..s<k>w5.
   voglio pos, Necchi come se fosse 0
   voglio len, Necchi come se fosse 0
   voglio spazi, Necchi come se fosse 0
+  voglio capienza, Necchi come se fosse 0
   voglio comando, Necchi come se fosse 0
   voglio lettera, Necchi come se fosse 0
   voglio invalido, Necchi come se fosse 0
@@ -308,6 +315,10 @@ bituma [SEZIONE: lettura riga]
     a1 come se fosse 0 a2 come se fosse 0 a3 come se fosse 0 a4 come se fosse 0 a5 come se fosse 0
     stuzzica
       byte come se fosse brematurata la supercazzola leggi o scherziamo?
+bituma il tab (9) conta come uno spazio: normalizzato subito, cosi' segue lo stesso ramo del 32.
+      che cos'è byte?
+        9: byte come se fosse 32
+      e velocità di esecuzione
       che cos'è byte?
         256: fineRiga come se fosse 1 fineInput come se fosse 1
         o magari 10: fineRiga come se fosse 1
@@ -319,7 +330,15 @@ bituma [SEZIONE: lettura riga]
               che cos'è byte?
                 32: che cos'è len? maggiore di 0: spazi come se fosse spazi più 1 e velocità di esecuzione
                 o magari 58:
-                  che cos'è len? 0: comando come se fosse 1 o tarapia tapioco: invalido come se fosse 1 e velocità di esecuzione
+bituma i due punti valgono comando solo se non c'e' gia' stato un carattere valido o un carattere non ammesso in questa riga.
+                  che cos'è len?
+                    0:
+                      che cos'è invalido?
+                        0: comando come se fosse 1
+                        o tarapia tapioco: invalido come se fosse 1
+                      e velocità di esecuzione
+                    o tarapia tapioco: invalido come se fosse 1
+                  e velocità di esecuzione
                 o tarapia tapioco:
                   codice come se fosse brematurata la supercazzola decodifica con byte o scherziamo?
                   che cos'è codice?
@@ -327,11 +346,12 @@ bituma [SEZIONE: lettura riga]
                     o magari 98: invalido come se fosse 1 fineRiga come se fosse 1
                     o magari 99: invalido come se fosse 1 fineRiga come se fosse 1 fineInput come se fosse 1
                     o tarapia tapioco:
-bituma prima gli spazi in attesa (spazi volte il codice 1), poi il carattere; oltre 20 si tronca
-                      stuzzica
-                        che cos'è spazi? maggiore di 0: daEmettere come se fosse 1 o tarapia tapioco: daEmettere come se fosse codice e velocità di esecuzione
-                        che cos'è len?
-                          minore di 20:
+bituma prima gli spazi in attesa (spazi volte il codice 1), poi il carattere; si emette solo se c'e' posto per tutti (len+spazi<20), altrimenti si tronca senza scrivere ne' gli spazi ne' il carattere.
+                      capienza come se fosse len più spazi
+                      che cos'è capienza?
+                        minore di 20:
+                          stuzzica
+                            che cos'è spazi? maggiore di 0: daEmettere come se fosse 1 o tarapia tapioco: daEmettere come se fosse codice e velocità di esecuzione
                             pos come se fosse len
                             che cos'è pos?
                               minore di 4: a1 come se fosse brematurata la supercazzola metti con a1, pos, daEmettere o scherziamo?
@@ -341,10 +361,12 @@ bituma prima gli spazi in attesa (spazi volte il codice 1), poi il carattere; ol
                               o tarapia tapioco: a5 come se fosse brematurata la supercazzola metti con a5, pos meno 16, daEmettere o scherziamo?
                             e velocità di esecuzione
                             len come se fosse len più 1
-                          o tarapia tapioco: troncato come se fosse 1
-                        e velocità di esecuzione
-                        spazi come se fosse spazi meno 1
-                      e brematura anche, se spazi maggiore uguale a 0
+                            spazi come se fosse spazi meno 1
+                          e brematura anche, se spazi maggiore uguale a 0
+                        o tarapia tapioco:
+                          troncato come se fosse 1
+                          len come se fosse 20
+                      e velocità di esecuzione
                       spazi come se fosse 0
                   e velocità di esecuzione
               e velocità di esecuzione

@@ -20,6 +20,9 @@ UTF-8, comandi, memoria, confronto, ordinamento, stampa — è in `src/antani.mc
 
 Da file: `./antani < nomi.txt` — a fine input la lista viene ordinata e stampata.
 
+Solo la prima lettera dopo `:` viene controllata: `:quit` equivale a `:q`, `:ordina` a `:o`.
+I tab contano come spazi (a inizio/fine riga vengono tagliati, in mezzo diventano uno spazio).
+
 ## Build
 
     brew install llvm@21 ragel cmake
