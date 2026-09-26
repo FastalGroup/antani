@@ -66,23 +66,137 @@ blinda la supercazzola msgSconosciuto o scherziamo?
   brematurata la supercazzola scrivi8 con 115, 99, 111, 110, 111, 115, 99, 105 o scherziamo?
   brematurata la supercazzola scrivi8 con 117, 116, 111, 46, 10, 0, 0, 0 o scherziamo?
 
+bituma Inserisce codice (7 bit) nella posizione pos (0-3) di una parola: il carattere 0 sta nei bit alti.
+blinda la supercazzola Necchi metti con parola Necchi, pos Necchi, codice Necchi o scherziamo?
+  voglio spostamento, Necchi come se fosse 21 meno pos per 7
+  voglio pezzo, Necchi come se fosse codice con scappellamento a sinistra per spostamento
+  vaffanzum parola più pezzo!
+
+bituma Estrae il codice in posizione pos (0-3): niente AND, si sottrae la parte alta.
+blinda la supercazzola Necchi prendi con parola Necchi, pos Necchi o scherziamo?
+  voglio spostamento, Necchi come se fosse 21 meno pos per 7
+  voglio alto, Necchi come se fosse parola con scappellamento a destra per spostamento
+  voglio sopra, Necchi come se fosse alto con scappellamento a destra per 7
+  sopra come se fosse sopra con scappellamento a sinistra per 7
+  vaffanzum alto meno sopra!
+
+bituma Codice in posizione p (0-19) di un nome impacchettato in cinque parole.
+blinda la supercazzola Necchi carattere con w1 Necchi, w2 Necchi, w3 Necchi, w4 Necchi, w5 Necchi, p Necchi o scherziamo?
+  voglio risultato, Necchi come se fosse 0
+  che cos'è p?
+    minore di 4: risultato come se fosse brematurata la supercazzola prendi con w1, p o scherziamo?
+    o magari minore di 8: risultato come se fosse brematurata la supercazzola prendi con w2, p meno 4 o scherziamo?
+    o magari minore di 12: risultato come se fosse brematurata la supercazzola prendi con w3, p meno 8 o scherziamo?
+    o magari minore di 16: risultato come se fosse brematurata la supercazzola prendi con w4, p meno 12 o scherziamo?
+    o tarapia tapioco: risultato come se fosse brematurata la supercazzola prendi con w5, p meno 16 o scherziamo?
+  e velocità di esecuzione
+  vaffanzum risultato!
+
+bituma Byte di input -> codice. 0 = non ammesso. Spazio e due punti li gestisce il blocco principale.
+blinda la supercazzola Necchi decodifica con byte Necchi o scherziamo?
+  voglio codice, Necchi come se fosse 0
+  che cos'è byte?
+    39: codice come se fosse 2
+    o magari 45: codice come se fosse 3
+    o magari minore di 65: codice come se fosse 0
+    o magari minore di 91: codice come se fosse byte meno 55
+    o magari minore di 97: codice come se fosse 0
+    o magari minore di 123: codice come se fosse byte meno 57
+  e velocità di esecuzione
+  vaffanzum codice!
+
+bituma Codice -> byte stampati.
+blinda la supercazzola scriviCodice con codice Necchi o scherziamo?
+  che cos'è codice?
+    1: brematurata la supercazzola scrivi con 32 o scherziamo?
+    o magari 2: brematurata la supercazzola scrivi con 39 o scherziamo?
+    o magari 3: brematurata la supercazzola scrivi con 45 o scherziamo?
+    o magari minore di 40: brematurata la supercazzola scrivi con codice più 55 o scherziamo?
+    o magari minore di 70: brematurata la supercazzola scrivi con codice più 57 o scherziamo?
+  e velocità di esecuzione
+
+bituma Stampa "num. " (num da 1 a 16) cifra per cifra.
+blinda la supercazzola stampaIndice con num Necchi o scherziamo?
+  che cos'è num?
+    maggiore di 9:
+      brematurata la supercazzola scrivi con 49 o scherziamo?
+      brematurata la supercazzola scrivi con num meno 10 più 48 o scherziamo?
+    o tarapia tapioco:
+      brematurata la supercazzola scrivi con num più 48 o scherziamo?
+  e velocità di esecuzione
+  brematurata la supercazzola scrivi con 46 o scherziamo?
+  brematurata la supercazzola scrivi con 32 o scherziamo?
+
+blinda la supercazzola stampaNome con w1 Necchi, w2 Necchi, w3 Necchi, w4 Necchi, w5 Necchi o scherziamo?
+  voglio p, Necchi come se fosse 0
+  voglio codice, Necchi come se fosse 0
+  stuzzica
+    codice come se fosse brematurata la supercazzola carattere con w1, w2, w3, w4, w5, p o scherziamo?
+    che cos'è codice? maggiore di 0: brematurata la supercazzola scriviCodice con codice o scherziamo? e velocità di esecuzione
+    p come se fosse p più 1
+  e brematura anche, se p minore di 20
+
+bituma 'Lista vuota.\n'
+blinda la supercazzola msgVuota o scherziamo?
+  brematurata la supercazzola scrivi8 con 76, 105, 115, 116, 97, 32, 118, 117 o scherziamo?
+  brematurata la supercazzola scrivi8 con 111, 116, 97, 46, 10, 0, 0, 0 o scherziamo?
+
 Lei ha clacsonato
 bituma [SEZIONE: dichiarazioni]
+bituma I 16 slot: slot k = parole s<k>w1..s<k>w5.
+  voglio s0w1, Necchi come se fosse 0 voglio s0w2, Necchi come se fosse 0 voglio s0w3, Necchi come se fosse 0 voglio s0w4, Necchi come se fosse 0 voglio s0w5, Necchi come se fosse 0
+  voglio s1w1, Necchi come se fosse 0 voglio s1w2, Necchi come se fosse 0 voglio s1w3, Necchi come se fosse 0 voglio s1w4, Necchi come se fosse 0 voglio s1w5, Necchi come se fosse 0
+  voglio s2w1, Necchi come se fosse 0 voglio s2w2, Necchi come se fosse 0 voglio s2w3, Necchi come se fosse 0 voglio s2w4, Necchi come se fosse 0 voglio s2w5, Necchi come se fosse 0
+  voglio s3w1, Necchi come se fosse 0 voglio s3w2, Necchi come se fosse 0 voglio s3w3, Necchi come se fosse 0 voglio s3w4, Necchi come se fosse 0 voglio s3w5, Necchi come se fosse 0
+  voglio s4w1, Necchi come se fosse 0 voglio s4w2, Necchi come se fosse 0 voglio s4w3, Necchi come se fosse 0 voglio s4w4, Necchi come se fosse 0 voglio s4w5, Necchi come se fosse 0
+  voglio s5w1, Necchi come se fosse 0 voglio s5w2, Necchi come se fosse 0 voglio s5w3, Necchi come se fosse 0 voglio s5w4, Necchi come se fosse 0 voglio s5w5, Necchi come se fosse 0
+  voglio s6w1, Necchi come se fosse 0 voglio s6w2, Necchi come se fosse 0 voglio s6w3, Necchi come se fosse 0 voglio s6w4, Necchi come se fosse 0 voglio s6w5, Necchi come se fosse 0
+  voglio s7w1, Necchi come se fosse 0 voglio s7w2, Necchi come se fosse 0 voglio s7w3, Necchi come se fosse 0 voglio s7w4, Necchi come se fosse 0 voglio s7w5, Necchi come se fosse 0
+  voglio s8w1, Necchi come se fosse 0 voglio s8w2, Necchi come se fosse 0 voglio s8w3, Necchi come se fosse 0 voglio s8w4, Necchi come se fosse 0 voglio s8w5, Necchi come se fosse 0
+  voglio s9w1, Necchi come se fosse 0 voglio s9w2, Necchi come se fosse 0 voglio s9w3, Necchi come se fosse 0 voglio s9w4, Necchi come se fosse 0 voglio s9w5, Necchi come se fosse 0
+  voglio s10w1, Necchi come se fosse 0 voglio s10w2, Necchi come se fosse 0 voglio s10w3, Necchi come se fosse 0 voglio s10w4, Necchi come se fosse 0 voglio s10w5, Necchi come se fosse 0
+  voglio s11w1, Necchi come se fosse 0 voglio s11w2, Necchi come se fosse 0 voglio s11w3, Necchi come se fosse 0 voglio s11w4, Necchi come se fosse 0 voglio s11w5, Necchi come se fosse 0
+  voglio s12w1, Necchi come se fosse 0 voglio s12w2, Necchi come se fosse 0 voglio s12w3, Necchi come se fosse 0 voglio s12w4, Necchi come se fosse 0 voglio s12w5, Necchi come se fosse 0
+  voglio s13w1, Necchi come se fosse 0 voglio s13w2, Necchi come se fosse 0 voglio s13w3, Necchi come se fosse 0 voglio s13w4, Necchi come se fosse 0 voglio s13w5, Necchi come se fosse 0
+  voglio s14w1, Necchi come se fosse 0 voglio s14w2, Necchi come se fosse 0 voglio s14w3, Necchi come se fosse 0 voglio s14w4, Necchi come se fosse 0 voglio s14w5, Necchi come se fosse 0
+  voglio s15w1, Necchi come se fosse 0 voglio s15w2, Necchi come se fosse 0 voglio s15w3, Necchi come se fosse 0 voglio s15w4, Necchi come se fosse 0 voglio s15w5, Necchi come se fosse 0
+  voglio n, Necchi come se fosse 0
+  voglio idx, Necchi come se fosse 0
+  voglio a1, Necchi come se fosse 0 voglio a2, Necchi come se fosse 0 voglio a3, Necchi come se fosse 0 voglio a4, Necchi come se fosse 0 voglio a5, Necchi come se fosse 0
+  voglio b1, Necchi come se fosse 0 voglio b2, Necchi come se fosse 0 voglio b3, Necchi come se fosse 0 voglio b4, Necchi come se fosse 0 voglio b5, Necchi come se fosse 0
   voglio byte, Necchi come se fosse 0
+  voglio codice, Necchi come se fosse 0
+  voglio daEmettere, Necchi come se fosse 0
+  voglio pos, Necchi come se fosse 0
   voglio len, Necchi come se fosse 0
+  voglio spazi, Necchi come se fosse 0
   voglio comando, Necchi come se fosse 0
   voglio lettera, Necchi come se fosse 0
+  voglio invalido, Necchi come se fosse 0
+  voglio troncato, Necchi come se fosse 0
   voglio fineRiga, Necchi come se fosse 0
   voglio fineInput, Necchi come se fosse 0
   voglio continua, Necchi come se fosse 1
+  voglio daOrdinare, Necchi come se fosse 0
+  voglio daStampare, Necchi come se fosse 0
+  voglio j, Necchi come se fosse 0
+  voglio limite, Necchi come se fosse 0
+  voglio scambiato, Necchi come se fosse 0
+  voglio prima, Necchi come se fosse 0
   brematurata la supercazzola msgBenvenuto o scherziamo?
   stuzzica
     brematurata la supercazzola msgPrompt o scherziamo?
 bituma [SEZIONE: lettura riga]
     len come se fosse 0
+    spazi come se fosse 0
     comando come se fosse 0
     lettera come se fosse 0
+    invalido come se fosse 0
+    troncato come se fosse 0
     fineRiga come se fosse 0
+    daOrdinare come se fosse 0
+    daStampare come se fosse 0
+    a1 come se fosse 0 a2 come se fosse 0 a3 come se fosse 0 a4 come se fosse 0 a5 come se fosse 0
     stuzzica
       byte come se fosse brematurata la supercazzola leggi o scherziamo?
       che cos'è byte?
@@ -94,9 +208,36 @@ bituma [SEZIONE: lettura riga]
             1: che cos'è lettera? 0: lettera come se fosse byte e velocità di esecuzione
             o tarapia tapioco:
               che cos'è byte?
-                32:
-                o magari 58: che cos'è len? 0: comando come se fosse 1 e velocità di esecuzione
-                o tarapia tapioco: len come se fosse len più 1
+                32: che cos'è len? maggiore di 0: spazi come se fosse spazi più 1 e velocità di esecuzione
+                o magari 58:
+                  che cos'è len? 0: comando come se fosse 1 o tarapia tapioco: invalido come se fosse 1 e velocità di esecuzione
+                o tarapia tapioco:
+                  codice come se fosse brematurata la supercazzola decodifica con byte o scherziamo?
+                  che cos'è codice?
+                    0: invalido come se fosse 1
+                    o magari 98: invalido come se fosse 1 fineRiga come se fosse 1
+                    o magari 99: invalido come se fosse 1 fineRiga come se fosse 1 fineInput come se fosse 1
+                    o tarapia tapioco:
+bituma prima gli spazi in attesa (spazi volte il codice 1), poi il carattere; oltre 20 si tronca
+                      stuzzica
+                        che cos'è spazi? maggiore di 0: daEmettere come se fosse 1 o tarapia tapioco: daEmettere come se fosse codice e velocità di esecuzione
+                        che cos'è len?
+                          minore di 20:
+                            pos come se fosse len
+                            che cos'è pos?
+                              minore di 4: a1 come se fosse brematurata la supercazzola metti con a1, pos, daEmettere o scherziamo?
+                              o magari minore di 8: a2 come se fosse brematurata la supercazzola metti con a2, pos meno 4, daEmettere o scherziamo?
+                              o magari minore di 12: a3 come se fosse brematurata la supercazzola metti con a3, pos meno 8, daEmettere o scherziamo?
+                              o magari minore di 16: a4 come se fosse brematurata la supercazzola metti con a4, pos meno 12, daEmettere o scherziamo?
+                              o tarapia tapioco: a5 come se fosse brematurata la supercazzola metti con a5, pos meno 16, daEmettere o scherziamo?
+                            e velocità di esecuzione
+                            len come se fosse len più 1
+                          o tarapia tapioco: troncato come se fosse 1
+                        e velocità di esecuzione
+                        spazi come se fosse spazi meno 1
+                      e brematura anche, se spazi maggiore uguale a 0
+                      spazi come se fosse 0
+                  e velocità di esecuzione
               e velocità di esecuzione
           e velocità di esecuzione
       e velocità di esecuzione
@@ -105,9 +246,38 @@ bituma [SEZIONE: azione]
     che cos'è comando?
       1:
         che cos'è lettera?
-          113: brematurata la supercazzola msgArrivederci o scherziamo? continua come se fosse 0
+          108: daStampare come se fosse 1
+          o magari 76: daStampare come se fosse 1
+          o magari 113: brematurata la supercazzola msgArrivederci o scherziamo? continua come se fosse 0
           o magari 81: brematurata la supercazzola msgArrivederci o scherziamo? continua come se fosse 0
           o tarapia tapioco: brematurata la supercazzola msgSconosciuto o scherziamo?
+        e velocità di esecuzione
+      o tarapia tapioco:
+        che cos'è len?
+          maggiore di 0:
+            che cos'è n?
+              minore di 16:
+                idx come se fosse n
+                che cos'è idx?
+                  0: s0w1 come se fosse a1 s0w2 come se fosse a2 s0w3 come se fosse a3 s0w4 come se fosse a4 s0w5 come se fosse a5
+                  o magari 1: s1w1 come se fosse a1 s1w2 come se fosse a2 s1w3 come se fosse a3 s1w4 come se fosse a4 s1w5 come se fosse a5
+                  o magari 2: s2w1 come se fosse a1 s2w2 come se fosse a2 s2w3 come se fosse a3 s2w4 come se fosse a4 s2w5 come se fosse a5
+                  o magari 3: s3w1 come se fosse a1 s3w2 come se fosse a2 s3w3 come se fosse a3 s3w4 come se fosse a4 s3w5 come se fosse a5
+                  o magari 4: s4w1 come se fosse a1 s4w2 come se fosse a2 s4w3 come se fosse a3 s4w4 come se fosse a4 s4w5 come se fosse a5
+                  o magari 5: s5w1 come se fosse a1 s5w2 come se fosse a2 s5w3 come se fosse a3 s5w4 come se fosse a4 s5w5 come se fosse a5
+                  o magari 6: s6w1 come se fosse a1 s6w2 come se fosse a2 s6w3 come se fosse a3 s6w4 come se fosse a4 s6w5 come se fosse a5
+                  o magari 7: s7w1 come se fosse a1 s7w2 come se fosse a2 s7w3 come se fosse a3 s7w4 come se fosse a4 s7w5 come se fosse a5
+                  o magari 8: s8w1 come se fosse a1 s8w2 come se fosse a2 s8w3 come se fosse a3 s8w4 come se fosse a4 s8w5 come se fosse a5
+                  o magari 9: s9w1 come se fosse a1 s9w2 come se fosse a2 s9w3 come se fosse a3 s9w4 come se fosse a4 s9w5 come se fosse a5
+                  o magari 10: s10w1 come se fosse a1 s10w2 come se fosse a2 s10w3 come se fosse a3 s10w4 come se fosse a4 s10w5 come se fosse a5
+                  o magari 11: s11w1 come se fosse a1 s11w2 come se fosse a2 s11w3 come se fosse a3 s11w4 come se fosse a4 s11w5 come se fosse a5
+                  o magari 12: s12w1 come se fosse a1 s12w2 come se fosse a2 s12w3 come se fosse a3 s12w4 come se fosse a4 s12w5 come se fosse a5
+                  o magari 13: s13w1 come se fosse a1 s13w2 come se fosse a2 s13w3 come se fosse a3 s13w4 come se fosse a4 s13w5 come se fosse a5
+                  o magari 14: s14w1 come se fosse a1 s14w2 come se fosse a2 s14w3 come se fosse a3 s14w4 come se fosse a4 s14w5 come se fosse a5
+                  o magari 15: s15w1 come se fosse a1 s15w2 come se fosse a2 s15w3 come se fosse a3 s15w4 come se fosse a4 s15w5 come se fosse a5
+                e velocità di esecuzione
+                n come se fosse n più 1
+            e velocità di esecuzione
         e velocità di esecuzione
     e velocità di esecuzione
 bituma [SEZIONE: fine input]
@@ -115,5 +285,39 @@ bituma [SEZIONE: fine input]
       1:
         che cos'è continua? 1: brematurata la supercazzola aCapo o scherziamo? e velocità di esecuzione
         continua come se fosse 0
+    e velocità di esecuzione
+bituma [SEZIONE: stampa]
+    che cos'è daStampare?
+      1:
+        che cos'è n?
+          0: brematurata la supercazzola msgVuota o scherziamo?
+          o tarapia tapioco:
+            j come se fosse 0
+            stuzzica
+              idx come se fosse j
+              che cos'è idx?
+                0: a1 come se fosse s0w1 a2 come se fosse s0w2 a3 come se fosse s0w3 a4 come se fosse s0w4 a5 come se fosse s0w5
+                o magari 1: a1 come se fosse s1w1 a2 come se fosse s1w2 a3 come se fosse s1w3 a4 come se fosse s1w4 a5 come se fosse s1w5
+                o magari 2: a1 come se fosse s2w1 a2 come se fosse s2w2 a3 come se fosse s2w3 a4 come se fosse s2w4 a5 come se fosse s2w5
+                o magari 3: a1 come se fosse s3w1 a2 come se fosse s3w2 a3 come se fosse s3w3 a4 come se fosse s3w4 a5 come se fosse s3w5
+                o magari 4: a1 come se fosse s4w1 a2 come se fosse s4w2 a3 come se fosse s4w3 a4 come se fosse s4w4 a5 come se fosse s4w5
+                o magari 5: a1 come se fosse s5w1 a2 come se fosse s5w2 a3 come se fosse s5w3 a4 come se fosse s5w4 a5 come se fosse s5w5
+                o magari 6: a1 come se fosse s6w1 a2 come se fosse s6w2 a3 come se fosse s6w3 a4 come se fosse s6w4 a5 come se fosse s6w5
+                o magari 7: a1 come se fosse s7w1 a2 come se fosse s7w2 a3 come se fosse s7w3 a4 come se fosse s7w4 a5 come se fosse s7w5
+                o magari 8: a1 come se fosse s8w1 a2 come se fosse s8w2 a3 come se fosse s8w3 a4 come se fosse s8w4 a5 come se fosse s8w5
+                o magari 9: a1 come se fosse s9w1 a2 come se fosse s9w2 a3 come se fosse s9w3 a4 come se fosse s9w4 a5 come se fosse s9w5
+                o magari 10: a1 come se fosse s10w1 a2 come se fosse s10w2 a3 come se fosse s10w3 a4 come se fosse s10w4 a5 come se fosse s10w5
+                o magari 11: a1 come se fosse s11w1 a2 come se fosse s11w2 a3 come se fosse s11w3 a4 come se fosse s11w4 a5 come se fosse s11w5
+                o magari 12: a1 come se fosse s12w1 a2 come se fosse s12w2 a3 come se fosse s12w3 a4 come se fosse s12w4 a5 come se fosse s12w5
+                o magari 13: a1 come se fosse s13w1 a2 come se fosse s13w2 a3 come se fosse s13w3 a4 come se fosse s13w4 a5 come se fosse s13w5
+                o magari 14: a1 come se fosse s14w1 a2 come se fosse s14w2 a3 come se fosse s14w3 a4 come se fosse s14w4 a5 come se fosse s14w5
+                o magari 15: a1 come se fosse s15w1 a2 come se fosse s15w2 a3 come se fosse s15w3 a4 come se fosse s15w4 a5 come se fosse s15w5
+              e velocità di esecuzione
+              brematurata la supercazzola stampaIndice con j più 1 o scherziamo?
+              brematurata la supercazzola stampaNome con a1, a2, a3, a4, a5 o scherziamo?
+              brematurata la supercazzola aCapo o scherziamo?
+              j come se fosse j più 1
+            e brematura anche, se j minore di n
+        e velocità di esecuzione
     e velocità di esecuzione
   e brematura anche, se continua maggiore di 0
