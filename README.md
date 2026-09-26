@@ -1,6 +1,8 @@
-# antani
+# Antani
 
-Ordinamento alfabetico di una lista di nomi, scritto in **Monicelli puro**: il
+Utility a linea di comando per effettuare l'ordinamento alfabetico di un elenco di nomi.
+
+Il software è stato realizzato in **Monicelli puro**: il
 linguaggio di programmazione esoterico che traduce in codice la *supercazzola*
 del film *Amici miei*.
 
@@ -26,16 +28,23 @@ Arrivederci.
 `antani` è un esperimento: dimostrare che un harness di coding agentico come
 [Claude Code](https://claude.com/claude-code) è in grado di progettare,
 scrivere, testare e rivedere un programma reale e non banale in un linguaggio
-esoterico, poco documentato e privo delle strutture che di solito si danno per
-scontate.
+esoterico, poco documentato e privo delle strutture che caratterizzano i linguaggi di ultima generazione.
 
-Il vincolo è la **purezza**: tutta la logica sta in [`src/antani.mc`](src/antani.mc)
+Che gli attuali strumenti di coding agentico siano in grado di generare codice funzionante in linguaggi di programmazione di larga diffusione, di cui esistono milioni di esempi in rete, entrati nei percorsi di addestramento dei LLM, è un fatto noto e scontato.
+
+Ma se decidessimo di utilizzare un linguaggio assolutamente esoterico, praticamente mai utilizzato in progetti reali, dalla sintassi bizzarra e fortemente fuorviante, tanto da far sembrare il codice una vera *supercazzola*, come se la caverebbe un harness come **Claude Code**.
+
+Questo repository contiuene il risultato di un siffatto esperimento.
+
+Il vincolo progettuale è stato l'assoluta **purezza**: tutta la logica si trova in [`src/antani.mc`](src/antani.mc)
 ed è compilata con il compilatore ufficiale di Monicelli, `mcc`. Nessun wrapper,
 generatore di codice o libreria esterna partecipa all'elaborazione. Lettura
 dell'input carattere per carattere, decodifica UTF-8, interpretazione dei
 comandi, memoria, confronto, ordinamento e stampa sono tutti in Monicelli.
 
-Il lavoro è stato svolto con un processo tracciabile, conservato nel repo:
+Il lavoro è stato svolto con lo stesso processo tracciabile utilizzato nei progetti commerciali di Fastal. 
+
+I file di progettazione tipici del plugin *superpowers* di Claude Code sono conservati nel repo:
 
 - [`docs/superpowers/specs/2026-09-26-antani-sort-design.md`](docs/superpowers/specs/2026-09-26-antani-sort-design.md):
   la spec di design, con i vincoli del linguaggio verificati sui sorgenti di `mcc`;
@@ -94,8 +103,19 @@ Un assaggio della sintassi, preso da `antani`:
 
 ## Setup dell'ambiente di sviluppo
 
-Testato su **macOS x86_64** con Homebrew. Il compilatore `mcc` va costruito da
-sorgente: non esistono pacchetti precompilati.
+Il compilatore `mcc` va costruito da sorgente: non esistono pacchetti
+precompilati. In ogni caso servono LLVM 21 (il CMake di Monicelli richiede quella
+versione), ragel, cmake, `git`, `make` e un compilatore C chiamato `c99`, che
+`mcc` invoca come linker per produrre l'eseguibile.
+
+| Sistema | Procedura | Stato |
+|---|---|---|
+| macOS x86_64 | [macOS](#macos) | verificata |
+| Linux Ubuntu/Debian | [Linux e WSL](#linux-e-wsl-ubuntu) | verificata su Ubuntu 24.04 |
+| Windows 10/11 | [Windows con WSL2](#windows-con-wsl2), poi [Linux e WSL](#linux-e-wsl-ubuntu) | verificata (Ubuntu 24.04 è lo stesso ambiente di WSL2) |
+| Windows nativo | [Windows nativo](#windows-nativo-sperimentale) | sperimentale, non verificata |
+
+### macOS
 
 1. **Strumenti da riga di comando di Xcode.** Forniscono `git`, `make` e `c99`,
    il linker che `mcc` invoca per produrre l'eseguibile:
@@ -127,6 +147,111 @@ sorgente: non esistono pacchetti precompilati.
    ~/mcc/bin/mcc --help
    ```
 
+### Windows con WSL2
+
+Su Windows il modo consigliato è WSL2 con Ubuntu: Ubuntu LTS è la piattaforma di
+riferimento del compilatore Monicelli, e il progetto usa strumenti POSIX (`make`,
+`sh`, il linker `c99`) che lì funzionano senza modifiche.
+
+1. **Installare WSL2 con Ubuntu.** Da PowerShell aperta come amministratore:
+
+   ```powershell
+   wsl --install -d Ubuntu-24.04
+   ```
+
+   Riavviare se richiesto, poi aprire "Ubuntu 24.04" dal menu Start e creare
+   l'utente Linux.
+
+2. **Lavorare nel filesystem Linux.** Clonare il progetto nella home di WSL
+   (`~`), non sotto `/mnt/c/...`: il disco Windows è molto più lento da WSL e può
+   perdere i permessi di esecuzione di `tests/run.sh`.
+
+   ```bash
+   cd ~
+   git clone https://github.com/FastalGroup/antani.git
+   cd antani
+   ```
+
+   Il repository è privato: servono credenziali GitHub con accesso a
+   FastalGroup, per esempio con `gh auth login` o un personal access token.
+
+3. **Proseguire con i passi di [Linux e WSL](#linux-e-wsl-ubuntu)**, tutti nel
+   terminale Ubuntu.
+
+Per modificare il codice da Windows, VS Code con l'estensione "WSL" apre la
+cartella direttamente dentro Ubuntu (`code .` dal terminale WSL).
+
+### Linux e WSL (Ubuntu)
+
+Procedura verificata su Ubuntu 24.04 (in un container, che è lo stesso ambiente
+di WSL2 Ubuntu).
+
+1. **Pacchetti di base.** `build-essential` fornisce anche `c99`.
+
+   ```bash
+   sudo apt-get update
+   sudo apt-get install -y build-essential git make cmake ragel wget gnupg \
+     lsb-release software-properties-common zlib1g-dev libzstd-dev
+   ```
+
+2. **LLVM 21.** Ubuntu 24.04 non lo ha nei repository standard: si usa quello
+   ufficiale di LLVM.
+
+   ```bash
+   wget https://apt.llvm.org/llvm.sh
+   chmod +x llvm.sh
+   sudo ./llvm.sh 21
+   sudo apt-get install -y llvm-21-dev
+   ```
+
+3. **Compilatore Monicelli.** Su Linux non c'è Homebrew, quindi `LLVM_DIR` va
+   indicato esplicitamente:
+
+   ```bash
+   make mcc LLVM_DIR=/usr/lib/llvm-21/lib/cmake/llvm
+   ```
+
+4. **Verifica:**
+
+   ```bash
+   ~/mcc/bin/mcc --help
+   ```
+
+Da qui in poi valgono le istruzioni di [Compilare e lanciare](#compilare-e-lanciare).
+
+### Windows nativo (sperimentale)
+
+Questa procedura **non è stata verificata**; la base è la nota per Windows del
+[README di Monicelli](https://github.com/esseks/monicelli/blob/main/README.md).
+`mcc` lancia il linker con fork+exec, che su Windows non esiste: va compilato
+senza linker, produce solo un file oggetto e il collegamento con la runtime C si
+fa a mano.
+
+1. Installare LLVM 21 con i file di sviluppo CMake, ragel, cmake e un compilatore
+   C/C++ (per esempio Visual Studio Build Tools, oppure MSYS2 con i pacchetti
+   `mingw-w64-x86_64-*`).
+2. Compilare `mcc` disabilitando il linker:
+
+   ```bash
+   git clone https://github.com/esseks/monicelli
+   cd monicelli
+   git checkout 07d389c3bb5cd670f1aa3d543c9a29fa4369243e
+   cmake -S . -B build -DMONICELLI_LINKER=OFF -DLLVM_DIR=<llvm-21>/lib/cmake/llvm
+   cmake --build build --target install
+   ```
+
+3. Compilare `antani` in un file oggetto e collegarlo con la runtime C:
+
+   ```bash
+   mcc -c src/antani.mc -o antani.o
+   clang antani.o -o antani.exe
+   ```
+
+`make`, `make test` e `tests/run.sh` richiedono una shell POSIX (Git Bash o
+MSYS2). Se qualcosa non torna, WSL2 è la strada sicura.
+
+### Variabili del Makefile
+
 Variabili del `Makefile` che si possono sovrascrivere, per esempio con
 `make mcc LLVM_DIR=/percorso/llvm/lib/cmake/llvm`:
 
@@ -137,10 +262,9 @@ Variabili del `Makefile` che si possono sovrascrivere, per esempio con
 | `MONICELLI_SRC` | `.build/monicelli` | dove clonare i sorgenti di `mcc` |
 | `MONICELLI_REV` | `07d389c…` | commit di Monicelli da compilare |
 
-Su altre piattaforme il procedimento è lo stesso (LLVM 21, ragel, cmake, un
-compilatore C chiamato `c99` nel `PATH`), ma non è stato provato. Su Apple
-Silicon o Linux ARM il CMake di Monicelli va configurato con
-`-DMONICELLI_ARCH=AArch64`, perché il default è `x86`.
+Su processori ARM (Apple Silicon, Linux ARM, Windows su ARM) il CMake di
+Monicelli va configurato con `-DMONICELLI_ARCH=AArch64`, perché il default è
+`x86`: questa variante non è stata verificata.
 
 ## Compilare e lanciare
 
