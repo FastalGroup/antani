@@ -30,6 +30,14 @@ ufficiali (vedi «Tabella dei luoghi»).
   eseguibile di circa 200 KB con risultati corretti.
 - Il programma non sa se stdin è un terminale, non conosce la data corrente e
   termina sempre con codice di uscita 0.
+- **`mcc` non compila sorgenti più grandi di 1 MiB.** Il lexer legge a blocchi
+  di 1 MiB (`lexer.h`, `Buffer::DEFAULT_CAPACITY`). Un token a cavallo del
+  confine va perso perché `getNextToken` azzera `state_.ts`, e anche con i confini
+  allineati su token completi il lexer va in assert alla fine del file
+  (`Cursor out of bounds`). Riprodotto con un file sintetico minimo. La tabella
+  con controllo di lunghezza e di provincia per ogni nome pesa circa 4 MB e non
+  compila. Il formato compatto (sotto) pesa circa 654 KB e compila in circa 1 min.
+  Il sorgente concatenato deve restare **sotto 1 MiB**, e il Makefile lo verifica.
 
 ## Interfaccia
 
@@ -48,9 +56,11 @@ Formato: `Cognome;Nome;Sesso;GG/MM/AAAA;Luogo[;PR]`.
 - `Sesso`: `M` o `F`, anche minuscoli.
 - `Luogo`: comune (attuale o cessato, denominazione italiana o alternativa
   bilingue) oppure stato estero.
-- `PR`: sigla di provincia, facoltativa; è accettata qualunque sigla il comune
-  abbia avuto nel tempo (`Monza;MI` e `Monza;MB`). Per gli stati esteri si può
-  indicare `EE`, che viene ignorata.
+- `PR`: sigla di provincia, facoltativa. Serve **solo a distinguere i nomi
+  ambigui** (Livo CO/TN): per questi è accettata qualunque sigla il comune abbia
+  avuto nel tempo. Per i nomi non ambigui, cioè il 99%, la sigla viene
+  controllata solo nel formato ed è poi ignorata (`Roma;MI` dà H501), per il
+  limite di 1 MiB. `EE` equivale a nessuna sigla.
 - Spazi prima e dopo ogni campo vengono ignorati.
 - Un `\r` a fine riga viene ignorato (file Windows).
 - L'output è il codice di 16 caratteri seguito da `\n`, oppure `ERRORE: …`.
@@ -109,7 +119,7 @@ in ordine di campo.
 | sesso diverso da `M`/`F` | `ERRORE: sesso non valido` |
 | data malformata o inesistente, anno fuori da 1861–2099 | `ERRORE: data non valida` |
 | provincia diversa da 2 lettere | `ERRORE: provincia non valida` |
-| luogo non trovato (anche con una provincia che non gli appartiene) | `ERRORE: luogo sconosciuto` |
+| luogo non trovato; per un nome ambiguo, sigla che non corrisponde a nessun candidato valido alla data | `ERRORE: luogo sconosciuto` |
 | più codici possibili alla data e nessuna provincia che li distingua | `ERRORE: luogo ambiguo, indicare la provincia` |
 | nessun periodo di validità contiene la data di nascita | `ERRORE: luogo non valido alla data di nascita` |
 
@@ -152,12 +162,15 @@ Durante la lettura si conservano solo le prime 4 consonanti (`c1…c4`), le prim
 
 Durante la lettura si calcolano:
 
-- `h = h*31 + lettera` in aritmetica `i32` con overflow (da confermare nel piano
-  che `mcc` emetta `mul`/`add` senza `nsw`);
-- `len`, il numero di lettere normalizzate;
+- `h = h*31 + lettera` in aritmetica `i32` con overflow. È verificato che `mcc`
+  emette `mul`/`add` senza `nsw` (`codegen.def`, `CreateBinOp`);
 - `prov = l1*26 + l2` (0 se assente, `EE` trattata come assente).
 
-`luogo(h, len, data, prov)`, definita in `src/luoghi.mc`, restituisce:
+Non c'è controllo di lunghezza, per il limite di 1 MiB. Un nome inesistente
+viene scambiato per uno reale con probabilità di circa 11.000/2³², cioè 1 su
+400.000.
+
+`luogo(h, data, prov)`, definita in `src/luoghi.mc`, restituisce:
 
 - `> 0`: codice catastale impacchettato come `lettera*1000 + numero`
   (`H501` → `8501`, `Z404` → `26404`);
@@ -200,15 +213,14 @@ assegna l'Agenzia delle Entrate solo in caso di collisione.
 3. Raggruppa per nome normalizzato. Per ogni nome raggruppa per codice, unendo
    periodi (`DATAISTITUZIONE`–`DATACESSAZIONE`) e sigle di provincia.
 4. Si ferma con un errore se due nomi diversi hanno lo stesso hash. Oggi, con
-   11.063 chiavi e moltiplicatore 31, le collisioni sono 0.
-5. Scrive `src/luoghi.mc`: un'intestazione `bituma` (file generato, fonti, data,
+   11.088 chiavi e moltiplicatore 31, le collisioni sono 0.
+5. Scrive `src/luoghi.mc`: un'intestazione `bituma` (file generato, fonti,
    non modificare a mano) e la funzione `luogo`, con una catena
    `che cos'è h?` da un caso per nome. In ogni caso:
-   - se `len` è diverso, il risultato è `-1`;
-   - se il nome ha **un solo codice**, lo restituisce senza guardare data né
-     provincia. Unica eccezione: una provincia indicata che il comune non ha mai
-     avuto dà `-1`. Regola di tolleranza: `Abano` per un nato nel 1950 dà
-     A001, lo stesso codice di Abano Terme;
+   - se il nome ha **un solo codice**, il caso sta su una riga
+     (`o magari <h>: r come se fosse <codice>`) e restituisce il codice senza
+     guardare data né provincia. Regola di tolleranza: `Abano` per un nato nel
+     1950 dà A001, lo stesso codice di Abano Terme;
    - se il nome ha **più codici**, genera `che cos'è` annidati che, per ogni
      codice, contano i candidati validi. Un candidato è valido se un suo periodo
      contiene `data` e, se `prov ≠ 0`, se ha avuto quella sigla. Con un solo
@@ -220,6 +232,10 @@ assegna l'Agenzia delle Entrate solo in caso di collisione.
    Castro BG/LE, Peglio, Samone, San Teodoro, più casi storici). Per 28 coppie
    (nome, provincia) il codice cambia nel tempo (Bellagio CO: A744 fino al
    2014-02-03, poi M335).
+
+Lo script si ferma con un errore se `src/luoghi.mc` supera 768 KiB, per
+lasciare spazio a `src/codfisc.mc` sotto il limite di 1 MiB. Il Makefile
+verifica il limite sul sorgente concatenato prima di invocare `mcc`.
 
 `make luoghi` riscarica le fonti ANPR e rigenera `src/luoghi.mc`. Il file
 generato è committato, così la build non richiede Python né rete.
@@ -241,6 +257,8 @@ tests/codfisc/NN-*.in/out casi di test di codfisc
   - `luoghi` rigenera la tabella;
   - `test` esegue le suite dei due programmi;
   - `verifica-luoghi` esegue il test di copertura;
+  - prima di `mcc` il Makefile verifica che `.build/codfisc.mc` sia sotto
+    1.048.576 byte;
   - `/codfisc` va aggiunto a `.gitignore`.
 - Le funzioni di I/O (`leggi`, `scrivi`, `scrivi8`, `aCapo`) vengono copiate da
   `antani.mc`, perché `mcc` non permette di condividerle.
@@ -261,7 +279,7 @@ dall'output del programma. Casi:
 3. accenti, apostrofi, doppi cognomi, `ß`
 4. donne (giorno + 40), tutti i mesi, 29/02 bisestile e non
 5. comuni omonimi: senza provincia (ambiguo) e con provincia
-6. provincia storica e attuale (`Monza;MI` nel 1980, `Monza;MB`)
+6. provincia ignorata per un nome non ambiguo (`Roma;MI` → H501), sigla malformata (`Roma;R1`) → errore
 7. fusioni legate alla data (Bellagio 2010 → A744, 2020 → M335)
 8. denominazione bilingue (`Bozen` = `Bolzano`)
 9. stati esteri, stato cessato (Jugoslavia 1970), `EE`
