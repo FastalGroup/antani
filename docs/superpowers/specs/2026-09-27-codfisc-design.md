@@ -60,7 +60,8 @@ Formato: `Cognome;Nome;Sesso;GG/MM/AAAA;Luogo[;PR]`.
   ambigui** (Livo CO/TN): per questi è accettata qualunque sigla il comune abbia
   avuto nel tempo. Per i nomi non ambigui, cioè il 99%, la sigla viene
   controllata solo nel formato ed è poi ignorata (`Roma;MI` dà H501), per il
-  limite di 1 MiB. `EE` equivale a nessuna sigla.
+  limite di 1 MiB. `EE` è la sigla degli stati esteri: distingue per esempio
+  Palau stato (`Palau;EE`) da Palau comune (`Palau;SS`).
 - Spazi prima e dopo ogni campo vengono ignorati.
 - Un `\r` a fine riga viene ignorato (file Windows).
 - L'output è il codice di 16 caratteri seguito da `\n`, oppure `ERRORE: …`.
@@ -164,7 +165,7 @@ Durante la lettura si calcolano:
 
 - `h = h*31 + lettera` in aritmetica `i32` con overflow. È verificato che `mcc`
   emette `mul`/`add` senza `nsw` (`codegen.def`, `CreateBinOp`);
-- `prov = l1*26 + l2` (0 se assente, `EE` trattata come assente).
+- `prov = l1*26 + l2` (0 se assente; `EE` vale 135 ed è la sigla degli stati esteri).
 
 Non c'è controllo di lunghezza, per il limite di 1 MiB. Un nome inesistente
 viene scambiato per uno reale con probabilità di circa 11.000/2³², cioè 1 su
@@ -197,7 +198,9 @@ assegna l'Agenzia delle Entrate solo in caso di collisione.
   19.364 righe, di cui 7.894 comuni attivi e 11.470 cessati.
 - `tabella_2_statiesteri.xlsx`, tabella di decodifica 2 ANPR (stati esteri):
   si usano le righe con `CODAT` valorizzato, **anche quelle con `NASCITA=N`**
-  (territori come Bermuda Z400, Aruba Z501).
+  (territori come Bermuda Z400, Aruba Z501), con la sola colonna
+  `DENOMINAZIONE` (quella ISTAT contiene forme come `Benin (ex Dahomey)`). Agli
+  stati si assegna la sigla `EE`.
 - `stati-cessati.csv`, curato a mano: stati esteri cessati assenti dalla
   tabella ANPR (Jugoslavia Z118, URSS Z135, Cecoslovacchia Z105, …), con codici
   e periodi verificati sulla consultazione dell'Agenzia delle Entrate
@@ -282,7 +285,8 @@ dall'output del programma. Casi:
 6. provincia ignorata per un nome non ambiguo (`Roma;MI` → H501), sigla malformata (`Roma;R1`) → errore
 7. fusioni legate alla data (Bellagio 2010 → A744, 2020 → M335)
 8. denominazione bilingue (`Bozen` = `Bolzano`)
-9. stati esteri, stato cessato (Jugoslavia 1970), `EE`
+9. stati esteri, stato cessato (Jugoslavia 1970), nome sia comune sia stato
+   (`Palau` ambiguo, `Palau;EE` → stato, `Palau;SS` → comune)
 10. tutti i messaggi di errore; riga errata seguita da riga valida
 11. CRLF, spazi attorno ai campi, ultima riga senza `\n`
 12. modalità guidata: flusso completo, domanda ripetuta dopo un errore,
