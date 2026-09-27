@@ -124,9 +124,11 @@ in ordine di campo.
 | più codici possibili alla data e nessuna provincia che li distingua | `ERRORE: luogo ambiguo, indicare la provincia` |
 | nessun periodo di validità contiene la data di nascita | `ERRORE: luogo non valido alla data di nascita` |
 
-Caratteri ammessi nei campi di testo: lettere ASCII, lettere accentate UTF-8 a
-2 byte con primo byte `C3`, `C4` o `C5` (ridotte alla lettera base, `ß` → `SS`),
-spazio, `'`, `-`, `.`. Qualunque altro byte rende il campo non valido.
+Caratteri ammessi nei campi di testo: lettere ASCII; le lettere latine UTF-8 a
+2 byte che NFKD riduce a una lettera base, cioè quelle del blocco `C3` (À–ÿ, tranne
+Æ Ð × Ø Þ æ ð ÷ ø þ) più Ć ć Č č Š š Ž ž, con `ß` → `SS`; spazio, tab, `'`, `-`, `.`.
+Qualunque altro byte rende il campo non valido. Un BOM UTF-8 in testa all'input viene
+saltato.
 
 ## Algoritmo
 
