@@ -126,7 +126,9 @@ in ordine di campo.
 
 Caratteri ammessi nei campi di testo: lettere ASCII; le lettere latine UTF-8 a
 2 byte che NFKD riduce a una lettera base, cioè quelle del blocco `C3` (À–ÿ, tranne
-Æ Ð × Ø Þ æ ð ÷ ø þ) più Ć ć Č č Š š Ž ž, con `ß` → `SS`; spazio, tab, `'`, `-`, `.`.
+Æ Ð × Ø Þ æ ð ÷ ø þ) più Ć ć Č č Š š Ž ž, con `ß` → `SS`; spazio, tab, spazio non
+separabile, `'`, `’`, `‘`, `-`, `.`. Un byte 0xFF è un carattere non ammesso, non la fine
+dell'input.
 Qualunque altro byte rende il campo non valido. Un BOM UTF-8 in testa all'input viene
 saltato.
 

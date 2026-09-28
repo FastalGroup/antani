@@ -114,7 +114,9 @@ Arrivederci.
 - **Il sorgente deve restare sotto 1 MiB**: oltre, il lexer di `mcc` va in errore.
   Per questo la tabella è compatta e la provincia conta solo per i nomi ambigui.
   Il Makefile controlla il limite.
-- Un byte 0xFF nell'input viene letto come fine dell'input (come in `antani`).
+- L'input deve essere UTF-8. Un byte non valido (anche 0xFF, o un file UTF-16) produce
+  un errore sulla sua riga senza far perdere le righe successive; solo `FF FF` viene
+  scambiato per la fine dell'input.
 
 ### Build e test
 

@@ -22,9 +22,13 @@ blinda la supercazzola scrivi8 con c1 Necchi, c2 Necchi, c3 Necchi, c4 Necchi, c
 blinda la supercazzola aCapo o scherziamo?
   brematurata la supercazzola scrivi con 10 o scherziamo?
 
-bituma Legge un byte da stdin: 0-255, oppure 256 a fine input (vedi antani.mc: car parte da -1, 0xFF fa da sentinella).
+bituma Legge un byte da stdin: 0-254, 256 a fine input, oppure 1000+b per un byte 0xFF reale seguito dal byte b.
+bituma car parte da -1, come in antani.mc: a EOF resta invariato e si confonde con 0xFF. Per distinguerli si legge
+bituma ancora: dopo l'EOF scanf resta a EOF, quindi -1 di nuovo vuol dire fine input (FF FF resta ambiguo);
+bituma altrimenti il 0xFF era un byte vero e il byte appena letto va restituito al chiamante insieme a lui.
 blinda la supercazzola Necchi leggi o scherziamo?
   voglio car, Mascetti come se fosse -1
+  voglio dopo, Mascetti come se fosse -1
   voglio valore, Necchi come se fosse 0
   mi porga car
   valore come se fosse car
@@ -32,7 +36,14 @@ blinda la supercazzola Necchi leggi o scherziamo?
     minore di 0: valore come se fosse valore più 256
   e velocità di esecuzione
   che cos'è valore?
-    255: valore come se fosse 256
+    255:
+      mi porga dopo
+      valore come se fosse dopo
+      che cos'è valore?
+        -1: valore come se fosse 256
+        o magari minore di 0: valore come se fosse valore più 1256
+        o tarapia tapioco: valore come se fosse valore più 1000
+      e velocità di esecuzione
   e velocità di esecuzione
   vaffanzum valore!
 
@@ -208,7 +219,7 @@ blinda la supercazzola Necchi accentata con primo Necchi, sec Necchi o scherziam
   vaffanzum r!
 
 bituma Byte di un campo di testo (cognome, nome, luogo) -> lettera 1-26, 27 = SS, 0 = da saltare (' - .),
-bituma 97 = non ammesso, 96 = non ammesso e il secondo byte era ';', 98 = ... era '\n', 99 = ... era la fine dell'input.
+bituma 97 = non ammesso, 96 = non ammesso e un byte successivo era ';', 98 = ... era '\n', 99 = ... era la fine dell'input.
 bituma Spazi e tab li gestisce il blocco principale. 0xC3, 0xC4, 0xC5 aprono una accentata: il secondo byte viene letto qui.
 blinda la supercazzola Necchi decodifica con byte Necchi o scherziamo?
   voglio r, Necchi come se fosse 97
@@ -221,6 +232,21 @@ blinda la supercazzola Necchi decodifica con byte Necchi o scherziamo?
     o magari minore di 91: r come se fosse byte meno 64
     o magari minore di 97:
     o magari minore di 123: r come se fosse byte meno 96
+    o magari 194:
+bituma C2 A0, spazio non separabile: si salta come uno spazio.
+      seconda come se fosse brematurata la supercazzola leggi o scherziamo?
+      che cos'è seconda? 160: r come se fosse 0 o magari 10: r come se fosse 98 o magari 256: r come se fosse 99 o magari 59: r come se fosse 96 e velocità di esecuzione
+    o magari 226:
+bituma E2 80 98 e E2 80 99, apostrofi tipografici: si saltano come l'apostrofo.
+      seconda come se fosse brematurata la supercazzola leggi o scherziamo?
+      che cos'è seconda?
+        10: r come se fosse 98
+        o magari 256: r come se fosse 99
+        o magari 59: r come se fosse 96
+        o magari 128:
+          seconda come se fosse brematurata la supercazzola leggi o scherziamo?
+          che cos'è seconda? 152: r come se fosse 0 o magari 153: r come se fosse 0 o magari 10: r come se fosse 98 o magari 256: r come se fosse 99 o magari 59: r come se fosse 96 e velocità di esecuzione
+      e velocità di esecuzione
     o magari minore di 195:
     o magari minore di 198:
       seconda come se fosse brematurata la supercazzola leggi o scherziamo?
@@ -467,6 +493,8 @@ bituma [SEZIONE: lettura byte]
         minore di 0: byte come se fosse brematurata la supercazzola leggi o scherziamo?
         o tarapia tapioco: byte come se fosse sospeso sospeso come se fosse -1
       e velocità di esecuzione
+bituma 0xFF reale seguito da un byte (vedi leggi): si elabora 255, non ammesso, e il byte seguente resta in sospeso.
+      che cos'è byte? maggiore di 999: sospeso come se fosse byte meno 1000 byte come se fosse 255 e velocità di esecuzione
       chiudi come se fosse 0
       separa come se fosse 0
       che cos'è byte?
