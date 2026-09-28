@@ -51,6 +51,80 @@ I file di progettazione tipici del plugin *superpowers* di Claude Code sono cons
 - [`docs/superpowers/plans/2026-09-26-antani-sort.md`](docs/superpowers/plans/2026-09-26-antani-sort.md):
   il piano di implementazione in 5 task, sviluppati in TDD e rivisti uno per uno.
 
+## Codfisc: il codice fiscale
+
+La seconda utility del repository calcola il codice fiscale italiano. Anche questa è
+scritta in Monicelli ([`src/codfisc.mc`](src/codfisc.mc)); la tabella ufficiale dei
+luoghi di nascita, circa 11.000 denominazioni fra comuni attuali, comuni soppressi e
+stati esteri, è un file di soli dati ([`src/luoghi.mc`](src/luoghi.mc)) generato dalle
+fonti ANPR con `tools/importa-luoghi.py` (vedi [`dati/FONTI.md`](dati/FONTI.md)).
+
+```
+$ ./codfisc <<< "Rossi;Mario;M;15/03/1985;Roma"
+RSSMRA85C15H501R
+$ ./codfisc < persone.txt > codici.txt
+```
+
+### Modalità riga
+
+Una persona per riga, nel formato `Cognome;Nome;Sesso;GG/MM/AAAA;Luogo[;PR]`, e una
+riga di risposta per ogni riga letta: il codice oppure `ERRORE: <motivo>`.
+
+- `Sesso`: `M` o `F`.
+- `Luogo`: comune (anche soppresso, anche con il nome tedesco o sloveno) o stato estero,
+  con la denominazione ufficiale (`Stati Uniti d'America`, `Federazione Russa`).
+- `PR`: sigla di provincia, facoltativa. Serve solo quando il nome è ambiguo alla data
+  di nascita (`Livo;CO` o `Livo;TN`); `EE` indica uno stato estero (`Palau;EE`).
+  Per un nome non ambiguo la sigla viene ignorata.
+- Il codice del luogo è quello valido alla data di nascita: `Bellagio` dà A744 per chi
+  è nato prima della fusione del 2014 e M335 dopo.
+
+### Modalità guidata
+
+Si lancia `./codfisc` e si preme subito **Invio**: il programma saluta e fa le domande
+una alla volta, chiedendo la provincia solo quando serve. `:q` esce.
+
+```
+$ ./codfisc
+
+Lei ha clacsonato! Calcolo del codice fiscale.
+Risponda alle domande; :q per uscire.
+Cognome: Rossi
+Nome: Mario
+Sesso (M/F): M
+Data di nascita (GG/MM/AAAA): 15/03/1985
+Luogo di nascita: Roma
+Codice fiscale: RSSMRA85C15H501R
+Cognome: :q
+Arrivederci.
+```
+
+### Limiti e perché
+
+- **Niente argomenti da riga di comando.** In Monicelli il programma è un `main()`
+  senza parametri: l'unico ingresso è stdin. La «modalità a parametri» è quindi una
+  riga su stdin (`<<<`, pipe o file).
+- **Nessun output prima dell'Invio.** Il programma non può sapere se stdin è un
+  terminale: in modalità riga non deve stampare nulla oltre ai codici, quindi aspetta
+  la prima riga prima di decidere la modalità.
+- **Codice di uscita sempre 0**, anche con errori: gli errori sono nelle righe di output.
+- **Omocodia** non gestita: il codice calcolato è quello base.
+- **La tabella dei luoghi usa un hash a 32 bit del nome.** Un nome di luogo inesistente
+  ha una probabilità di circa 1 su 400.000 di essere scambiato per un luogo reale.
+- **Il sorgente deve restare sotto 1 MiB**: oltre, il lexer di `mcc` va in errore.
+  Per questo la tabella è compatta e la provincia conta solo per i nomi ambigui.
+  Il Makefile controlla il limite.
+- Un byte 0xFF nell'input viene letto come fine dell'input (come in `antani`).
+
+### Build e test
+
+```bash
+make codfisc              # circa un minuto: la tabella dei luoghi è grande
+make test                 # test di antani, di codfisc e degli script Python
+make verifica-luoghi      # confronta ogni luogo della tabella con un'implementazione Python
+make luoghi               # riscarica le fonti ANPR e rigenera src/luoghi.mc
+```
+
 ## Il linguaggio Monicelli
 
 [Monicelli](https://github.com/esseks/monicelli) è un linguaggio esoterico

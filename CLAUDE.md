@@ -12,6 +12,14 @@ può costruire un programma reale in **Monicelli puro**. Tutta la logica sta in
 al compilatore. Una funzionalità che non si può esprimere in Monicelli va
 discussa con l'utente, non aggirata.
 
+Il repo contiene anche `codfisc`, un generatore di codice fiscale: la logica è in
+`src/codfisc.mc`, scritta a mano. **Unica eccezione alla regola sui generatori:**
+`src/luoghi.mc` contiene solo la funzione `luogo` (la tabella dei luoghi di nascita)
+ed è generato da `tools/importa-luoghi.py` a partire dalle fonti ANPR in `dati/`.
+Non va modificato a mano: si modifica lo script e si rigenera. Spec e piano:
+`docs/superpowers/specs/2026-09-27-codfisc-design.md`,
+`docs/superpowers/plans/2026-09-27-codfisc.md`.
+
 Spec e piano originali: `docs/superpowers/specs/2026-09-26-antani-sort-design.md`,
 `docs/superpowers/plans/2026-09-26-antani-sort.md`. Il README documenta setup
 (macOS, Linux/WSL, Windows) e uso.
@@ -22,9 +30,14 @@ Spec e piano originali: `docs/superpowers/specs/2026-09-26-antani-sort-design.md
 make mcc                  # clona Monicelli (commit fissato in MONICELLI_REV) e installa mcc in ~/mcc
                           # su Linux/WSL: make mcc LLVM_DIR=/usr/lib/llvm-21/lib/cmake/llvm
 make                      # ~/mcc/bin/mcc src/antani.mc -o antani
-make test                 # tests/run.sh: tutti i casi
+make test                 # tests/run.sh su antani e codfisc, più i test Python
 tests/run.sh 12           # solo i test il cui nome inizia per "12"
 printf 'b\na\n:o\n:q\n' | ./antani
+make codfisc              # concatena src/luoghi.mc + src/codfisc.mc in .build/ e compila (~1 min)
+tests/run.sh codfisc 05   # test di codfisc (tests/codfisc/), eventualmente per prefisso
+make verifica-luoghi      # ogni luogo della tabella contro l'oracolo Python
+make luoghi               # riscarica le fonti ANPR e rigenera src/luoghi.mc
+python3 -m unittest discover -s tools
 
 ~/mcc/bin/mcc -p src/antani.mc   # AST come pseudocodice (utile per capire come è stato parsato)
 ~/mcc/bin/mcc -s src/antani.mc   # IR LLVM
@@ -66,6 +79,9 @@ presenti dopo `make mcc`; la documentazione ufficiale è incompleta.
     `Mascetti` stampa un byte senza newline, su `Necchi` stampa `%d\n`. Per
     questo i numeri si stampano cifra per cifra come caratteri. I byte ≥ 128
     arrivano negativi.
+11. **Sorgenti sotto 1 MiB.** Il lexer di `mcc` legge a blocchi da 1 MiB e va in
+    assert (`Cursor out of bounds`) su file più grandi. Il Makefile controlla
+    `.build/codfisc.mc`; per questo `luoghi.mc` è compatto (una riga per nome).
 
 ## Architettura di `src/antani.mc`
 
@@ -123,6 +139,32 @@ salva B e salva A in `ordinamento`; carica A in `stampa`. Cambiare la capacità
 - `stampaIndice`, che stampa solo numeri da 1 a 19;
 - il messaggio di benvenuto e il test `09-piena`.
 
+## Architettura di `src/codfisc.mc`
+
+`luogo(h, data, prov)` viene da `src/luoghi.mc` (concatenato prima). Codifiche
+condivise con `tools/importa-luoghi.py`: lettera A=1…Z=26, hash `h*31+lettera` in i32,
+provincia `l1*26+l2` (0 assente, `EE`=135 stato estero), codice catastale
+`lettera*1000+numero`. `luogo` restituisce -1 sconosciuto, -2 ambiguo, -3 non valido
+alla data.
+
+Funzioni: I/O come antani (`scrivi`, `scrivi8`, `aCapo`, `leggi`); messaggi
+(`msgBenvenuto`, `msgArrivederci`, `msgCodice`, `prompt(q)`, `errore(n, modo)`, dove
+`modo` 1 rende maiuscola l'iniziale e aggiunge il punto); `lettera`, `accentata`,
+`decodifica` (byte → lettera 1–26, 27 = SS, 0 da saltare, 96–99 non ammesso con
+`;`, `\n` o EOF come secondo byte); `sigla` (le 3 lettere di cognome/nome);
+`giorniMese`, `lettMese`, `dispari`, `pari`, `stampaCodice`.
+
+Blocco principale, sezioni `bituma [SEZIONE: …]`:
+- `modo`: salta il BOM; prima riga vuota → modalità guidata (`modo` 1), altrimenti
+  il primo byte resta in `sospeso`;
+- `inizio riga` / `apri campo` / `lettura byte` / `elabora byte` / `chiudi campo`:
+  un campo alla volta (`campo` 1–6; in modalità guidata `campo` = domanda `q`), in
+  streaming: prime 4 consonanti e 3 vocali, hash del luogo, cifre della data, sigla.
+  `chiudi campo` salva i risultati (`k1…k6`, `data`, `hL`, `prov`, `err*`);
+- `riga`: primo errore in ordine di campo, poi `luogo`, poi `stampaCodice`;
+- `guidata`: `:q`, cognome vuoto o EOF escono; un errore ripete la domanda; `-2`
+  sul luogo chiede la provincia (`q` = 6).
+
 ## Test
 
 Ogni caso è una coppia `tests/NN-nome.in` / `tests/NN-nome.out`, confrontata
@@ -138,3 +180,7 @@ byte per byte da `tests/run.sh`. Convenzioni:
 - L'output atteso si ricava ragionando sul comportamento specificato, mai
   copiando l'output del programma.
 - Si procede in TDD: prima il test che fallisce, poi il codice.
+
+I test di codfisc sono in `tests/codfisc/` (`tests/run.sh codfisc`). I valori attesi
+si ricavano dall'oracolo `tools/oracolo.py`, verificato su codici pubblicati, e dai
+codici catastali delle fonti. La modalità guidata si attiva con una prima riga vuota.
