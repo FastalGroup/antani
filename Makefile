@@ -19,6 +19,9 @@ test: antani codfisc
 	./tests/run.sh codfisc
 	python3 -m unittest discover -s tools
 
+verifica-luoghi: codfisc
+	python3 tools/verifica-luoghi.py ./codfisc
+
 luoghi:
 	curl -fsSL -A "Mozilla/5.0" -o dati/ANPR_archivio_comuni.csv https://www.anagrafenazionale.interno.it/wp-content/uploads/ANPR_archivio_comuni.csv
 	curl -fsSL -A "Mozilla/5.0" -o dati/tabella_2_statiesteri.xlsx https://www.anagrafenazionale.interno.it/wp-content/uploads/tabella_2_statiesteri.xlsx
@@ -34,4 +37,4 @@ mcc:
 clean:
 	rm -f antani codfisc
 
-.PHONY: test luoghi mcc clean
+.PHONY: test verifica-luoghi luoghi mcc clean
