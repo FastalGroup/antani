@@ -1,10 +1,18 @@
 # Antani
 
-Utility a linea di comando per effettuare l'ordinamento alfabetico di un elenco di nomi.
+Due utility a linea di comando scritte in **Monicelli puro**, il linguaggio di
+programmazione esoterico che traduce in codice la *supercazzola* del film *Amici miei*:
 
-Il software è stato realizzato in **Monicelli puro**: il
-linguaggio di programmazione esoterico che traduce in codice la *supercazzola*
-del film *Amici miei*.
+1. **`codfisc`**: calcola il **codice fiscale** italiano da cognome, nome, sesso, data
+   e luogo di nascita, con la tabella ufficiale completa dei luoghi (circa 11.000
+   denominazioni fra comuni attuali, comuni soppressi e stati esteri);
+2. **`antani`**: **ordina alfabeticamente** un elenco di nomi, ignorando maiuscole
+   e accenti.
+
+```
+$ ./codfisc <<< "Rossi;Mario;M;15/03/1985;Roma"
+RSSMRA85C15H501R
+```
 
 ```
 $ ./antani
@@ -23,41 +31,54 @@ Comandi: :o ordina  :l elenca  :c cancella  :q esci
 Arrivederci.
 ```
 
+Con ogni probabilità `codfisc` è il software più complesso scritto finora in
+Monicelli: su GitHub non abbiamo trovato esempi di complessità maggiore. Gli esempi
+ufficiali del linguaggio (fattoriale, Fibonacci, numeri primi, Mandelbrot) sommano
+in tutto 274 righe. `codfisc` ne ha 709 scritte a mano in
+[`src/codfisc.mc`](src/codfisc.mc), più una tabella generata di oltre 11.000 casi, e
+affronta un problema reale: decodifica UTF-8, validazione di un calendario, luoghi di
+nascita scelti in base alla data, carattere di controllo, due modalità d'uso.
+`antani` aggiunge altre 565 righe.
+
 ## Scopo del progetto
 
-`antani` è un esperimento: dimostrare che un harness di coding agentico come
+Questo repository è un esperimento: dimostrare che un harness di coding agentico come
 [Claude Code](https://claude.com/claude-code) è in grado di progettare,
-scrivere, testare e rivedere un programma reale e non banale in un linguaggio
+scrivere, testare e rivedere programmi reali e non banali in un linguaggio
 esoterico, poco documentato e privo delle strutture che caratterizzano i linguaggi di ultima generazione.
 
 Che gli attuali strumenti di coding agentico siano in grado di generare codice funzionante in linguaggi di programmazione di larga diffusione, di cui esistono milioni di esempi in rete, entrati nei percorsi di addestramento dei LLM, è un fatto noto e scontato.
 
 Ma se decidessimo di utilizzare un linguaggio assolutamente esoterico, praticamente mai utilizzato in progetti reali, dalla sintassi bizzarra e fortemente fuorviante, tanto da far sembrare il codice una vera *supercazzola*, come se la caverebbe un harness come **Claude Code**?
 
-Questo repository contiene il risultato di un siffatto esperimento.
+Questo repository contiene il risultato di un siffatto esperimento. Il codice
+fiscale è stato scelto apposta: il suo algoritmo, fra consonanti, vocali, mesi in
+lettere, giorni «più quaranta» e codici catastali che cambiano con le fusioni dei
+comuni, è già di suo una supercazzola.
 
-Il vincolo progettuale è stato l'assoluta **purezza**: tutta la logica si trova in [`src/antani.mc`](src/antani.mc)
-ed è compilata con il compilatore ufficiale di Monicelli, `mcc`. Nessun wrapper,
-generatore di codice o libreria esterna partecipa all'elaborazione. Lettura
-dell'input carattere per carattere, decodifica UTF-8, interpretazione dei
-comandi, memoria, confronto, ordinamento e stampa sono tutti in Monicelli.
+Il vincolo progettuale è stato l'assoluta **purezza**: tutta la logica si trova in
+[`src/codfisc.mc`](src/codfisc.mc) e [`src/antani.mc`](src/antani.mc) ed è compilata
+con il compilatore ufficiale di Monicelli, `mcc`. Nessun wrapper, generatore di
+codice o libreria esterna partecipa all'elaborazione. Lettura dell'input carattere
+per carattere, decodifica UTF-8, validazione, calcolo, memoria, confronto,
+ordinamento e stampa sono tutti in Monicelli. L'unica eccezione, concordata e
+dichiarata, riguarda i **dati**: la tabella dei luoghi di nascita
+([`src/luoghi.mc`](src/luoghi.mc)) è una funzione Monicelli di soli dati, generata da
+uno script a partire dalle fonti ufficiali ANPR, perché trascrivere a mano 11.000
+codici catastali non avrebbe dimostrato nulla.
 
-Il lavoro è stato svolto con lo stesso processo tracciabile utilizzato nei progetti commerciali di Fastal. 
+Il lavoro è stato svolto con lo stesso processo tracciabile utilizzato nei progetti commerciali di Fastal.
 
 I file di progettazione tipici del plugin *superpowers* di Claude Code sono conservati nel repo:
 
-- [`docs/superpowers/specs/2026-09-26-antani-sort-design.md`](docs/superpowers/specs/2026-09-26-antani-sort-design.md):
-  la spec di design, con i vincoli del linguaggio verificati sui sorgenti di `mcc`;
-- [`docs/superpowers/plans/2026-09-26-antani-sort.md`](docs/superpowers/plans/2026-09-26-antani-sort.md):
-  il piano di implementazione in 5 task, sviluppati in TDD e rivisti uno per uno.
+- [`docs/superpowers/specs/2026-09-27-codfisc-design.md`](docs/superpowers/specs/2026-09-27-codfisc-design.md)
+  e [`docs/superpowers/plans/2026-09-27-codfisc.md`](docs/superpowers/plans/2026-09-27-codfisc.md):
+  spec e piano di `codfisc`, compresi i limiti di `mcc` scoperti lungo la strada;
+- [`docs/superpowers/specs/2026-09-26-antani-sort-design.md`](docs/superpowers/specs/2026-09-26-antani-sort-design.md)
+  e [`docs/superpowers/plans/2026-09-26-antani-sort.md`](docs/superpowers/plans/2026-09-26-antani-sort.md):
+  spec e piano di `antani`, con i vincoli del linguaggio verificati sui sorgenti di `mcc`.
 
 ## Codfisc: il codice fiscale
-
-La seconda utility del repository calcola il codice fiscale italiano. Anche questa è
-scritta in Monicelli ([`src/codfisc.mc`](src/codfisc.mc)); la tabella ufficiale dei
-luoghi di nascita, circa 11.000 denominazioni fra comuni attuali, comuni soppressi e
-stati esteri, è un file di soli dati ([`src/luoghi.mc`](src/luoghi.mc)) generato dalle
-fonti ANPR con `tools/importa-luoghi.py` (vedi [`dati/FONTI.md`](dati/FONTI.md)).
 
 ```
 $ ./codfisc <<< "Rossi;Mario;M;15/03/1985;Roma"
@@ -99,6 +120,29 @@ Cognome: :q
 Arrivederci.
 ```
 
+### Come funziona
+
+- **Tutto in streaming.** Senza array né stringhe, i campi si elaborano mentre si
+  leggono i byte: del cognome e del nome servono solo le prime 4 consonanti e le prime
+  3 vocali, della data le cifre, del luogo un hash. Il codice si stampa solo dopo aver
+  validato l'intera riga.
+- **Lettere normalizzate.** Le accentate UTF-8 (anche `ß`, `Č`, `Š`, `Ž`) vengono
+  ridotte alla lettera base con la stessa regola (NFKD) usata per la tabella; spazi,
+  apostrofi (anche quelli tipografici) e trattini vengono saltati.
+- **Tabella dei luoghi.** `src/luoghi.mc` è un'unica catena `che cos'è` sull'hash del
+  nome: per i nomi con un solo codice catastale un caso di una riga; per i circa 100
+  nomi con più codici, controlli su periodi di validità e sigle di provincia. È
+  generata da [`tools/importa-luoghi.py`](tools/importa-luoghi.py) dall'archivio
+  storico dei comuni ANPR, dalla tabella ANPR degli stati esteri e dagli stati
+  soppressi dell'Agenzia delle Entrate (vedi [`dati/FONTI.md`](dati/FONTI.md)).
+- **Carattere di controllo.** Le tabelle dei valori per le posizioni dispari e pari
+  sono due funzioni `che cos'è`; il modulo 26, che Monicelli non ha, è
+  `s meno s diviso 26 per 26`.
+- **Verifica.** Oltre ai test di comportamento, `make verifica-luoghi` passa
+  dall'eseguibile ogni denominazione ufficiale, per ogni codice e periodo di validità
+  (oltre 41.000 righe), e confronta il risultato con un'implementazione Python
+  indipendente ([`tools/oracolo.py`](tools/oracolo.py)).
+
 ### Limiti e perché
 
 - **Niente argomenti da riga di comando.** In Monicelli il programma è un `main()`
@@ -117,15 +161,73 @@ Arrivederci.
 - L'input deve essere UTF-8. Un byte non valido (anche 0xFF, o un file UTF-16) produce
   un errore sulla sua riga senza far perdere le righe successive; solo `FF FF` viene
   scambiato per la fine dell'input.
+- I nomi dei luoghi vanno scritti nella forma ufficiale: «Cina» o «Reggio Emilia»
+  non sono riconosciuti («Repubblica Popolare Cinese», «Reggio nell'Emilia»).
+- Degli stati esteri soppressi sono inclusi solo quelli europei il cui nome non
+  coincide con uno stato attuale (Iugoslavia, URSS, Cecoslovacchia, Germania
+  Repubblica Democratica, Serbia e Montenegro): l'archivio dell'Agenzia delle Entrate
+  non pubblica le date di soppressione.
 
-### Build e test
+## Antani: l'ordinamento
 
-```bash
-make codfisc              # circa un minuto: la tabella dei luoghi è grande
-make test                 # test di antani, di codfisc e degli script Python
-make verifica-luoghi      # confronta ogni luogo della tabella con un'implementazione Python
-make luoghi               # riscarica le fonti ANPR e rigenera src/luoghi.mc
-```
+`./antani` raccoglie fino a 16 nomi, uno per riga, e li ordina alfabeticamente
+ignorando maiuscole e accenti ([`src/antani.mc`](src/antani.mc)).
+
+### Uso
+
+Si scrive un nome per riga. Una riga che inizia con `:` è un comando:
+
+| Comando | Effetto |
+|---|---|
+| `:o` | ordina la lista e la stampa numerata |
+| `:l` | stampa la lista nell'ordine attuale |
+| `:c` | svuota la lista |
+| `:q` | esce |
+
+- Conta solo la prima lettera dopo `:` (`:quit` equivale a `:q`); le maiuscole
+  sono accettate.
+- A fine input (**Ctrl-D** nel terminale, o fine del file) la lista viene
+  ordinata e stampata.
+- Da file: `./antani < nomi.txt`.
+- Il prompt `> ` viene stampato anche quando l'input arriva da una pipe:
+  Monicelli non può sapere se sta leggendo da un terminale.
+
+### Come funziona
+
+Monicelli non ha array, stringhe né memoria indicizzabile. I puntatori (`conte`)
+si possono dichiarare, ma il compilatore non permette di dereferenziarli né di
+fare aritmetica. Il programma quindi si costruisce tutto da sé:
+
+- **Codici carattere a 7 bit:** 0 fine, 1 spazio, 2 `'`, 3 `-`, 10–35 `A`–`Z`,
+  40–65 `a`–`z`, 70–75 `à è é ì ò ù`, 80–85 `À È É Ì Ò Ù`. Le accentate
+  arrivano in UTF-8 come coppia di byte `0xC3 xx`.
+- **Nomi impacchettati:** un nome sta in 5 Necchi da 4 caratteri ciascuno, a
+  colpi di `con scappellamento a sinistra per 7`.
+- **Registri indirizzabili:** i 16 slot sono 80 variabili nel blocco
+  principale. L'accesso "per indice" è una catena
+  `che cos'è idx? 0: … o magari 15: …` che copia lo slot in due registri
+  temporanei.
+- **Collazione:** la funzione `rango` riduce maiuscole, minuscole e accentate
+  alla lettera base; `precede` confronta due nomi carattere per carattere.
+- **Ordinamento:** bubble sort stabile, che scambia due nomi solo se il secondo
+  viene strettamente prima.
+- **Messaggi:** senza stringhe letterali, ogni testo è una sequenza di codici
+  ASCII stampati otto alla volta da `scrivi8`.
+
+### Limiti
+
+- Massimo **16 nomi** da **20 caratteri** ciascuno; oltre, il nome viene
+  troncato con un avviso.
+- Caratteri ammessi: lettere, spazio, `'`, `-`, `à è é ì ò ù À È É Ì Ò Ù`. Ogni
+  altro carattere scarta il nome con un avviso. I tab contano come spazi.
+- L'ordine ignora maiuscole e accenti; a parità di chiave resta l'ordine
+  d'inserimento.
+- Un byte `0xFF` nell'input viene letto come fine input. Monicelli non espone
+  il valore di ritorno di `scanf`, quindi un valore di byte va sacrificato come
+  sentinella; `0xFF` non compare mai in un testo UTF-8 valido.
+- La lista non può essere illimitata: senza memoria indicizzabile, l'unica
+  alternativa sarebbe modificare il compilatore, e non sarebbe più Monicelli
+  puro.
 
 ## Il linguaggio Monicelli
 
@@ -136,15 +238,15 @@ compilato, basato su LLVM, la cui sintassi riprende le battute del film
 la celebre [supercazzola](https://it.wikipedia.org/wiki/Supercazzola) del
 Conte Mascetti. I tipi portano i nomi dei protagonisti:
 
-| Tipo Monicelli | Equivalente C | Uso in antani |
+| Tipo Monicelli | Equivalente C | Uso nel progetto |
 |---|---|---|
-| `Necchi` | intero (32 bit nel compilatore attuale) | tutto: codici, parole impacchettate, flag, indici |
+| `Necchi` | intero (32 bit nel compilatore attuale) | tutto: codici, hash, date, parole impacchettate, flag, indici |
 | `Mascetti` | `char` | I/O di un byte |
 | `Perozzi` | `float` | — |
 | `Melandri` | `bool` | — (vedi "Insidie") |
 | `Sassaroli` | `double` | — |
 
-Un assaggio della sintassi, preso da `antani`:
+Un assaggio della sintassi, preso dai due programmi:
 
 | Costrutto | Monicelli | Equivalente |
 |---|---|---|
@@ -173,7 +275,7 @@ Un assaggio della sintassi, preso da `antani`:
   [Mario Monicelli](https://it.wikipedia.org/wiki/Mario_Monicelli)
 - Le dipendenze del compilatore: [LLVM](https://llvm.org), [Ragel](https://www.colm.net/open-source/ragel/)
 
-`antani` è compilato con `mcc` al commit
+Entrambe le utility sono compilate con `mcc` al commit
 [`07d389c`](https://github.com/esseks/monicelli/commit/07d389c3bb5cd670f1aa3d543c9a29fa4369243e)
 (novembre 2025), fissato nel `Makefile`.
 
@@ -313,11 +415,15 @@ fa a mano.
    cmake --build build --target install
    ```
 
-3. Compilare `antani` in un file oggetto e collegarlo con la runtime C:
+3. Compilare i programmi in un file oggetto e collegarli con la runtime C
+   (`codfisc` va prima concatenato alla tabella dei luoghi, come fa il `Makefile`):
 
    ```bash
    mcc -c src/antani.mc -o antani.o
    clang antani.o -o antani.exe
+   cat src/luoghi.mc src/codfisc.mc > codfisc-completo.mc
+   mcc -c codfisc-completo.mc -o codfisc.o
+   clang codfisc.o -o codfisc.exe
    ```
 
 `make`, `make test` e `tests/run.sh` richiedono una shell POSIX (Git Bash o
@@ -342,39 +448,23 @@ Monicelli va configurato con `-DMONICELLI_ARCH=AArch64`, perché il default è
 ## Compilare e lanciare
 
 ```bash
-make            # compila src/antani.mc in ./antani
-./antani        # modalità interattiva
-make test       # esegue i 21 casi di test in tests/
-make clean      # rimuove l'eseguibile
+make codfisc          # compila ./codfisc (circa un minuto: la tabella dei luoghi è grande)
+make                  # compila ./antani
+make test             # test di entrambe le utility e degli script Python
+make clean            # rimuove gli eseguibili
 ```
-
-### Uso
-
-Si scrive un nome per riga. Una riga che inizia con `:` è un comando:
-
-| Comando | Effetto |
-|---|---|
-| `:o` | ordina la lista e la stampa numerata |
-| `:l` | stampa la lista nell'ordine attuale |
-| `:c` | svuota la lista |
-| `:q` | esce |
-
-- Conta solo la prima lettera dopo `:` (`:quit` equivale a `:q`); le maiuscole
-  sono accettate.
-- A fine input (**Ctrl-D** nel terminale, o fine del file) la lista viene
-  ordinata e stampata.
-- Da file: `./antani < nomi.txt`.
-- Il prompt `> ` viene stampato anche quando l'input arriva da una pipe:
-  Monicelli non può sapere se sta leggendo da un terminale.
 
 ### Test
 
-Ogni caso è una coppia `tests/NN-nome.in` / `tests/NN-nome.out`: `tests/run.sh`
-passa l'input al programma e confronta lo stdout con quello atteso.
+Ogni caso è una coppia `.in` / `.out`: `tests/run.sh` passa l'input al programma e
+confronta lo stdout con quello atteso, byte per byte.
 
 ```bash
-tests/run.sh      # tutti i test
-tests/run.sh 12   # solo quelli il cui nome inizia per "12"
+tests/run.sh codfisc      # i test di codfisc, in tests/codfisc/
+tests/run.sh codfisc 05   # solo quelli il cui nome inizia per "05"
+tests/run.sh              # i test di antani, in tests/
+tests/run.sh 12           # solo quelli il cui nome inizia per "12"
+make verifica-luoghi      # ogni luogo della tabella confrontato con un'implementazione Python
 ```
 
 ### Debug con `mcc`
@@ -385,29 +475,10 @@ tests/run.sh 12   # solo quelli il cui nome inizia per "12"
 ~/mcc/bin/mcc -t src/antani.mc   # traccia i token letti dal lexer
 ```
 
-## Come funziona
+Per `codfisc` gli stessi comandi vanno lanciati su `.build/codfisc.mc`, il sorgente
+concatenato che produce `make codfisc`.
 
-Monicelli non ha array, stringhe né memoria indicizzabile. I puntatori (`conte`)
-si possono dichiarare, ma il compilatore non permette di dereferenziarli né di
-fare aritmetica. Il programma quindi si costruisce tutto da sé:
-
-- **Codici carattere a 7 bit:** 0 fine, 1 spazio, 2 `'`, 3 `-`, 10–35 `A`–`Z`,
-  40–65 `a`–`z`, 70–75 `à è é ì ò ù`, 80–85 `À È É Ì Ò Ù`. Le accentate
-  arrivano in UTF-8 come coppia di byte `0xC3 xx`.
-- **Nomi impacchettati:** un nome sta in 5 Necchi da 4 caratteri ciascuno, a
-  colpi di `con scappellamento a sinistra per 7`.
-- **Registri indirizzabili:** i 16 slot sono 80 variabili nel blocco
-  principale. L'accesso "per indice" è una catena
-  `che cos'è idx? 0: … o magari 15: …` che copia lo slot in due registri
-  temporanei.
-- **Collazione:** la funzione `rango` riduce maiuscole, minuscole e accentate
-  alla lettera base; `precede` confronta due nomi carattere per carattere.
-- **Ordinamento:** bubble sort stabile, che scambia due nomi solo se il secondo
-  viene strettamente prima.
-- **Messaggi:** senza stringhe letterali, ogni testo è una sequenza di codici
-  ASCII stampati otto alla volta da `scrivi8`.
-
-### Insidie del compilatore (verificate sui sorgenti di `mcc`)
+## Insidie del compilatore (verificate sui sorgenti di `mcc`)
 
 - Ogni `voglio` alloca spazio sullo stack nel punto in cui compare: dentro un
   ciclo lo stack cresce a ogni giro. Tutte le dichiarazioni stanno in testa alle
@@ -420,18 +491,8 @@ fare aritmetica. Il programma quindi si costruisce tutto da sé:
   variabile.
 - Non c'è un operatore AND sui bit: per estrarre un carattere si sottrae la
   parte alta, ottenuta con due shift.
-
-## Limiti
-
-- Massimo **16 nomi** da **20 caratteri** ciascuno; oltre, il nome viene
-  troncato con un avviso.
-- Caratteri ammessi: lettere, spazio, `'`, `-`, `à è é ì ò ù À È É Ì Ò Ù`. Ogni
-  altro carattere scarta il nome con un avviso. I tab contano come spazi.
-- L'ordine ignora maiuscole e accenti; a parità di chiave resta l'ordine
-  d'inserimento.
-- Un byte `0xFF` nell'input viene letto come fine input. Monicelli non espone
-  il valore di ritorno di `scanf`, quindi un valore di byte va sacrificato come
-  sentinella; `0xFF` non compare mai in un testo UTF-8 valido.
-- La lista non può essere illimitata: senza memoria indicizzabile, l'unica
-  alternativa sarebbe modificare il compilatore, e non sarebbe più Monicelli
-  puro.
+- `mcc` non compila sorgenti più grandi di 1 MiB: il lexer legge il file a blocchi
+  da 1 MiB e va in errore oltre il primo. È il motivo per cui la tabella dei luoghi
+  di `codfisc` è compatta.
+- `main()` non ha parametri e non c'è modo di scegliere il codice di uscita: gli
+  argomenti da riga di comando non sono raggiungibili, l'unico ingresso è stdin.

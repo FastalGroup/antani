@@ -4,25 +4,31 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Progetto
 
-`antani` è una CLI che ordina alfabeticamente fino a 16 nomi, scritta **interamente
-in Monicelli** (https://github.com/esseks/monicelli), il linguaggio esoterico
-basato sulla supercazzola di *Amici miei*. Lo scopo è dimostrare che un agente
-può costruire un programma reale in **Monicelli puro**. Tutta la logica sta in
-`src/antani.mc`: niente generatori di codice, wrapper o librerie, e niente patch
-al compilatore. Una funzionalità che non si può esprimere in Monicelli va
-discussa con l'utente, non aggirata.
+Il repo contiene due CLI scritte **interamente in Monicelli**
+(https://github.com/esseks/monicelli), il linguaggio esoterico basato sulla
+supercazzola di *Amici miei*:
 
-Il repo contiene anche `codfisc`, un generatore di codice fiscale: la logica è in
-`src/codfisc.mc`, scritta a mano. **Unica eccezione alla regola sui generatori:**
-`src/luoghi.mc` contiene solo la funzione `luogo` (la tabella dei luoghi di nascita)
-ed è generato da `tools/importa-luoghi.py` a partire dalle fonti ANPR in `dati/`.
-Non va modificato a mano: si modifica lo script e si rigenera. Spec e piano:
-`docs/superpowers/specs/2026-09-27-codfisc-design.md`,
-`docs/superpowers/plans/2026-09-27-codfisc.md`.
+1. **`codfisc`**: generatore di codice fiscale, con la tabella ufficiale completa dei
+   luoghi di nascita. Logica in `src/codfisc.mc`. Spec e piano:
+   `docs/superpowers/specs/2026-09-27-codfisc-design.md`,
+   `docs/superpowers/plans/2026-09-27-codfisc.md`.
+2. **`antani`**: ordina alfabeticamente fino a 16 nomi. Logica in `src/antani.mc`.
+   Spec e piano: `docs/superpowers/specs/2026-09-26-antani-sort-design.md`,
+   `docs/superpowers/plans/2026-09-26-antani-sort.md`.
 
-Spec e piano originali: `docs/superpowers/specs/2026-09-26-antani-sort-design.md`,
-`docs/superpowers/plans/2026-09-26-antani-sort.md`. Il README documenta setup
-(macOS, Linux/WSL, Windows) e uso.
+Lo scopo è dimostrare che un agente può costruire programmi reali in **Monicelli
+puro**; `codfisc` è con ogni probabilità il programma Monicelli più complesso finora
+(il README lo argomenta). Tutta la logica sta nei due `.mc`: niente generatori di
+codice, wrapper o librerie, e niente patch al compilatore. Una funzionalità che non
+si può esprimere in Monicelli va discussa con l'utente, non aggirata.
+
+**Unica eccezione alla regola sui generatori:** `src/luoghi.mc` contiene solo la
+funzione `luogo` (la tabella dei luoghi di nascita) ed è generato da
+`tools/importa-luoghi.py` a partire dalle fonti in `dati/` (vedi `dati/FONTI.md`).
+Non va modificato a mano: si modifica lo script e si rigenera. `tools/` contiene solo
+import dei dati e test (Python, solo libreria standard).
+
+Il README documenta le due utility, setup (macOS, Linux/WSL, Windows) e uso.
 
 ## Comandi
 
