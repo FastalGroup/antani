@@ -1212,6 +1212,7 @@ bituma VALDIGNADAOSTA
     o magari -1713491191: r come se fosse 2807
     o magari -1713358655: r come se fosse 7207
     o magari -1711067876: r come se fosse 9935
+    o magari -1710692815: r come se fosse 26111
     o magari -1710654619: r come se fosse 7591
     o magari -1709085639: r come se fosse 5913
     o magari -1708070227: r come se fosse 1627
@@ -1660,6 +1661,7 @@ bituma CAPRIVA
     o magari -1567845037: r come se fosse 7754
     o magari -1567294468: r come se fosse 7622
     o magari -1566820130: r come se fosse 8946
+    o magari -1565699886: r come se fosse 26135
     o magari -1565249906: r come se fosse 9087
     o magari -1564692948: r come se fosse 8336
     o magari -1564524618: r come se fosse 7628
@@ -2835,6 +2837,7 @@ bituma CORVARA
     o magari -1112389402: r come se fosse 4140
     o magari -1112121393: r come se fosse 4145
     o magari -1112111797: r come se fosse 4150
+    o magari -1111722917: r come se fosse 26157
     o magari -1111657174: r come se fosse 1694
     o magari -1111421712: r come se fosse 6212
     o magari -1110555652: r come se fosse 6819
@@ -3501,6 +3504,7 @@ bituma CAMPOSPINOSOALBAREDO
     o magari -773925003: r come se fosse 7328
     o magari -773872934: r come se fosse 8363
     o magari -773357759: r come se fosse 8376
+    o magari -772948486: r come se fosse 26118
     o magari -771830524: r come se fosse 4054
     o magari -771543315: r come se fosse 8473
     o magari -771510703: r come se fosse 8474
@@ -3701,6 +3705,7 @@ bituma RODENGO
     o magari -686122074: r come se fosse 3346
     o magari -685396407: r come se fosse 1198
     o magari -685276965: r come se fosse 1345
+    o magari -685255635: r come se fosse 26105
     o magari -684965601: r come se fosse 3225
     o magari -684206729: r come se fosse 6485
     o magari -684185558: r come se fosse 6997
