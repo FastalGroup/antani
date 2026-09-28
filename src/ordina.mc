@@ -1,4 +1,4 @@
-bituma antani.mc - ordinamento alfabetico di nomi in Monicelli puro.
+bituma ordina.mc - ordinamento alfabetico di nomi in Monicelli puro.
 bituma Regole: variabili in testa alle funzioni e mai nei cicli; flag come Necchi 0/1;
 bituma un solo vaffanzum in fondo; niente parentesi, lo shift lega meno di piu' e meno.
 

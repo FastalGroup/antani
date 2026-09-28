@@ -12,8 +12,9 @@ supercazzola di *Amici miei*:
    luoghi di nascita. Logica in `src/codfisc.mc`. Spec e piano:
    `docs/superpowers/specs/2026-09-27-codfisc-design.md`,
    `docs/superpowers/plans/2026-09-27-codfisc.md`.
-2. **`antani`**: ordina alfabeticamente fino a 16 nomi. Logica in `src/antani.mc`.
-   Spec e piano: `docs/superpowers/specs/2026-09-26-antani-sort-design.md`,
+2. **`ordina`**: ordina alfabeticamente fino a 16 nomi. Logica in `src/ordina.mc`.
+   Spec e piano, di quando si chiamava `antani` come il progetto:
+   `docs/superpowers/specs/2026-09-26-antani-sort-design.md`,
    `docs/superpowers/plans/2026-09-26-antani-sort.md`.
 
 Lo scopo è dimostrare che un agente può costruire programmi reali in **Monicelli
@@ -35,19 +36,19 @@ Il README documenta le due utility, setup (macOS, Linux/WSL, Windows) e uso.
 ```bash
 make mcc                  # clona Monicelli (commit fissato in MONICELLI_REV) e installa mcc in ~/mcc
                           # su Linux/WSL: make mcc LLVM_DIR=/usr/lib/llvm-21/lib/cmake/llvm
-make                      # ~/mcc/bin/mcc src/antani.mc -o antani
-make test                 # tests/run.sh su antani e codfisc, più i test Python
-tests/run.sh 12           # solo i test il cui nome inizia per "12"
-printf 'b\na\n:o\n:q\n' | ./antani
+make                      # compila ./codfisc e ./ordina (make codfisc / make ordina per uno solo)
+make test                 # tests/run.sh su entrambe le utility, più i test Python
+tests/run.sh ordina 12    # solo i test di ordina il cui nome inizia per "12"
+printf 'b\na\n:o\n:q\n' | ./ordina
 make codfisc              # concatena src/luoghi.mc + src/codfisc.mc in .build/ e compila (~1 min)
 tests/run.sh codfisc 05   # test di codfisc (tests/codfisc/), eventualmente per prefisso
 make verifica-luoghi      # ogni luogo della tabella contro l'oracolo Python
 make luoghi               # riscarica le fonti ANPR e rigenera src/luoghi.mc
 python3 -m unittest discover -s tools
 
-~/mcc/bin/mcc -p src/antani.mc   # AST come pseudocodice (utile per capire come è stato parsato)
-~/mcc/bin/mcc -s src/antani.mc   # IR LLVM
-~/mcc/bin/mcc -t src/antani.mc   # token del lexer
+~/mcc/bin/mcc -p src/ordina.mc   # AST come pseudocodice (utile per capire come è stato parsato)
+~/mcc/bin/mcc -s src/ordina.mc   # IR LLVM
+~/mcc/bin/mcc -t src/ordina.mc   # token del lexer
 ```
 
 Non esiste un linter. Per esperimenti di sintassi conviene compilare un piccolo
@@ -89,7 +90,7 @@ presenti dopo `make mcc`; la documentazione ufficiale è incompleta.
     assert (`Cursor out of bounds`) su file più grandi. Il Makefile controlla
     `.build/codfisc.mc`; per questo `luoghi.mc` è compatto (una riga per nome).
 
-## Architettura di `src/antani.mc`
+## Architettura di `src/ordina.mc`
 
 Un solo file: prima le funzioni, poi il blocco principale `Lei ha clacsonato`.
 Le funzioni non vedono le variabili del chiamante, quindi tutto lo stato vive
@@ -153,7 +154,7 @@ provincia `l1*26+l2` (0 assente, `EE`=135 stato estero), codice catastale
 `lettera*1000+numero`. `luogo` restituisce -1 sconosciuto, -2 ambiguo, -3 non valido
 alla data.
 
-Funzioni: I/O come antani (`scrivi`, `scrivi8`, `aCapo`, `leggi`); messaggi
+Funzioni: I/O come ordina (`scrivi`, `scrivi8`, `aCapo`, `leggi`); messaggi
 (`msgBenvenuto`, `msgArrivederci`, `msgCodice`, `prompt(q)`, `errore(n, modo)`, dove
 `modo` 1 rende maiuscola l'iniziale e aggiunge il punto); `lettera`, `accentata`,
 `decodifica` (byte → lettera 1–26, 27 = SS, 0 da saltare, 96–99 non ammesso con
@@ -173,16 +174,17 @@ Blocco principale, sezioni `bituma [SEZIONE: …]`:
 
 ## Test
 
-Ogni caso è una coppia `tests/NN-nome.in` / `tests/NN-nome.out`, confrontata
-byte per byte da `tests/run.sh`. Convenzioni:
+Ogni caso è una coppia `tests/<programma>/NN-nome.in` / `.out`, confrontata byte per
+byte da `tests/run.sh` con l'output di `./<programma>`. Convenzioni per `ordina`
+(in `tests/ordina/`):
 
-- Ogni `.out` inizia con `tests/intestazione.txt`, le due righe di benvenuto.
+- Ogni `.out` inizia con `tests/ordina/intestazione.txt`, le due righe di benvenuto.
 - Il prompt `> ` viene stampato prima di **ogni** riga letta, anche in pipe, e
   non va a capo. L'output di una riga compare quindi subito dopo il suo prompt
-  (vedi `tests/07-invalido.out`).
+  (vedi `tests/ordina/07-invalido.out`).
 - I file si creano con `printf`, compresi UTF-8, `\r`, `\0` e byte grezzi come
   `\303`. Per esempio:
-  `{ cat tests/intestazione.txt; printf '> Arrivederci.\n'; } > tests/NN-x.out`
+  `{ cat tests/ordina/intestazione.txt; printf '> Arrivederci.\n'; } > tests/ordina/NN-x.out`
 - L'output atteso si ricava ragionando sul comportamento specificato, mai
   copiando l'output del programma.
 - Si procede in TDD: prima il test che fallisce, poi il codice.

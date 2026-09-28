@@ -23,7 +23,7 @@ blinda la supercazzola aCapo o scherziamo?
   brematurata la supercazzola scrivi con 10 o scherziamo?
 
 bituma Legge un byte da stdin: 0-254, 256 a fine input, oppure 1000+b per un byte 0xFF reale seguito dal byte b.
-bituma car parte da -1, come in antani.mc: a EOF resta invariato e si confonde con 0xFF. Per distinguerli si legge
+bituma car parte da -1, come in ordina.mc: a EOF resta invariato e si confonde con 0xFF. Per distinguerli si legge
 bituma ancora: dopo l'EOF scanf resta a EOF, quindi -1 di nuovo vuol dire fine input (FF FF resta ambiguo);
 bituma altrimenti il 0xFF era un byte vero e il byte appena letto va restituito al chiamante insieme a lui.
 blinda la supercazzola Necchi leggi o scherziamo?

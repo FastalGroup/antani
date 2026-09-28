@@ -6,7 +6,7 @@ programmazione esoterico che traduce in codice la *supercazzola* del film *Amici
 1. **`codfisc`**: calcola il **codice fiscale** italiano da cognome, nome, sesso, data
    e luogo di nascita, con la tabella ufficiale completa dei luoghi (circa 11.000
    denominazioni fra comuni attuali, comuni soppressi e stati esteri);
-2. **`antani`**: **ordina alfabeticamente** un elenco di nomi, ignorando maiuscole
+2. **`ordina`**: **ordina alfabeticamente** un elenco di nomi, ignorando maiuscole
    e accenti.
 
 ```
@@ -15,7 +15,7 @@ RSSMRA85C15H501R
 ```
 
 ```
-$ ./antani
+$ ./ordina
 Lei ha clacsonato! Inserisca i nomi, uno per riga (massimo 16).
 Comandi: :o ordina  :l elenca  :c cancella  :q esci
 > Mario
@@ -38,7 +38,7 @@ in tutto 274 righe. `codfisc` ne ha 709 scritte a mano in
 [`src/codfisc.mc`](src/codfisc.mc), più una tabella generata di oltre 11.000 casi, e
 affronta un problema reale: decodifica UTF-8, validazione di un calendario, luoghi di
 nascita scelti in base alla data, carattere di controllo, due modalità d'uso.
-`antani` aggiunge altre 565 righe.
+`ordina` aggiunge altre 565 righe.
 
 ## Scopo del progetto
 
@@ -57,7 +57,7 @@ lettere, giorni «più quaranta» e codici catastali che cambiano con le fusioni
 comuni, è già di suo una supercazzola.
 
 Il vincolo progettuale è stato l'assoluta **purezza**: tutta la logica si trova in
-[`src/codfisc.mc`](src/codfisc.mc) e [`src/antani.mc`](src/antani.mc) ed è compilata
+[`src/codfisc.mc`](src/codfisc.mc) e [`src/ordina.mc`](src/ordina.mc) ed è compilata
 con il compilatore ufficiale di Monicelli, `mcc`. Nessun wrapper, generatore di
 codice o libreria esterna partecipa all'elaborazione. Lettura dell'input carattere
 per carattere, decodifica UTF-8, validazione, calcolo, memoria, confronto,
@@ -76,7 +76,8 @@ I file di progettazione tipici del plugin *superpowers* di Claude Code sono cons
   spec e piano di `codfisc`, compresi i limiti di `mcc` scoperti lungo la strada;
 - [`docs/superpowers/specs/2026-09-26-antani-sort-design.md`](docs/superpowers/specs/2026-09-26-antani-sort-design.md)
   e [`docs/superpowers/plans/2026-09-26-antani-sort.md`](docs/superpowers/plans/2026-09-26-antani-sort.md):
-  spec e piano di `antani`, con i vincoli del linguaggio verificati sui sorgenti di `mcc`.
+  spec e piano di `ordina` (che allora si chiamava `antani`, come il progetto), con i
+  vincoli del linguaggio verificati sui sorgenti di `mcc`.
 
 ## Codfisc: il codice fiscale
 
@@ -168,10 +169,10 @@ Arrivederci.
   Repubblica Democratica, Serbia e Montenegro): l'archivio dell'Agenzia delle Entrate
   non pubblica le date di soppressione.
 
-## Antani: l'ordinamento
+## Ordina: l'ordinamento
 
-`./antani` raccoglie fino a 16 nomi, uno per riga, e li ordina alfabeticamente
-ignorando maiuscole e accenti ([`src/antani.mc`](src/antani.mc)).
+`./ordina` raccoglie fino a 16 nomi, uno per riga, e li ordina alfabeticamente
+ignorando maiuscole e accenti ([`src/ordina.mc`](src/ordina.mc)).
 
 ### Uso
 
@@ -188,7 +189,7 @@ Si scrive un nome per riga. Una riga che inizia con `:` è un comando:
   sono accettate.
 - A fine input (**Ctrl-D** nel terminale, o fine del file) la lista viene
   ordinata e stampata.
-- Da file: `./antani < nomi.txt`.
+- Da file: `./ordina < nomi.txt`.
 - Il prompt `> ` viene stampato anche quando l'input arriva da una pipe:
   Monicelli non può sapere se sta leggendo da un terminale.
 
@@ -419,8 +420,8 @@ fa a mano.
    (`codfisc` va prima concatenato alla tabella dei luoghi, come fa il `Makefile`):
 
    ```bash
-   mcc -c src/antani.mc -o antani.o
-   clang antani.o -o antani.exe
+   mcc -c src/ordina.mc -o ordina.o
+   clang ordina.o -o ordina.exe
    cat src/luoghi.mc src/codfisc.mc > codfisc-completo.mc
    mcc -c codfisc-completo.mc -o codfisc.o
    clang codfisc.o -o codfisc.exe
@@ -448,8 +449,9 @@ Monicelli va configurato con `-DMONICELLI_ARCH=AArch64`, perché il default è
 ## Compilare e lanciare
 
 ```bash
-make codfisc          # compila ./codfisc (circa un minuto: la tabella dei luoghi è grande)
-make                  # compila ./antani
+make                  # compila ./codfisc e ./ordina (circa un minuto: la tabella dei luoghi è grande)
+make codfisc          # solo ./codfisc
+make ordina           # solo ./ordina
 make test             # test di entrambe le utility e degli script Python
 make clean            # rimuove gli eseguibili
 ```
@@ -460,19 +462,18 @@ Ogni caso è una coppia `.in` / `.out`: `tests/run.sh` passa l'input al programm
 confronta lo stdout con quello atteso, byte per byte.
 
 ```bash
-tests/run.sh codfisc      # i test di codfisc, in tests/codfisc/
-tests/run.sh codfisc 05   # solo quelli il cui nome inizia per "05"
-tests/run.sh              # i test di antani, in tests/
-tests/run.sh 12           # solo quelli il cui nome inizia per "12"
+tests/run.sh              # i test di entrambe le utility
+tests/run.sh codfisc      # solo quelli di codfisc, in tests/codfisc/
+tests/run.sh ordina 12    # solo quelli di ordina il cui nome inizia per "12"
 make verifica-luoghi      # ogni luogo della tabella confrontato con un'implementazione Python
 ```
 
 ### Debug con `mcc`
 
 ```bash
-~/mcc/bin/mcc -p src/antani.mc   # stampa l'AST come pseudocodice
-~/mcc/bin/mcc -s src/antani.mc   # stampa l'IR LLVM generato
-~/mcc/bin/mcc -t src/antani.mc   # traccia i token letti dal lexer
+~/mcc/bin/mcc -p src/ordina.mc   # stampa l'AST come pseudocodice
+~/mcc/bin/mcc -s src/ordina.mc   # stampa l'IR LLVM generato
+~/mcc/bin/mcc -t src/ordina.mc   # traccia i token letti dal lexer
 ```
 
 Per `codfisc` gli stessi comandi vanno lanciati su `.build/codfisc.mc`, il sorgente

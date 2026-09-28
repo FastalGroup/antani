@@ -5,8 +5,10 @@ MONICELLI_REV ?= 07d389c3bb5cd670f1aa3d543c9a29fa4369243e
 # mcc non compila sorgenti oltre 1 MiB (buffer del lexer): vedi la spec di codfisc.
 LIMITE_MCC = 1048576
 
-antani: src/antani.mc
-	$(MCC) src/antani.mc -o antani
+all: codfisc ordina
+
+ordina: src/ordina.mc
+	$(MCC) src/ordina.mc -o ordina
 
 codfisc: src/luoghi.mc src/codfisc.mc
 	mkdir -p .build
@@ -14,9 +16,8 @@ codfisc: src/luoghi.mc src/codfisc.mc
 	@test $$(wc -c < .build/codfisc.mc) -lt $(LIMITE_MCC) || { echo "ERRORE: .build/codfisc.mc supera 1 MiB, mcc non lo compila"; exit 1; }
 	$(MCC) .build/codfisc.mc -o codfisc
 
-test: antani codfisc
+test: ordina codfisc
 	./tests/run.sh
-	./tests/run.sh codfisc
 	python3 -m unittest discover -s tools
 
 verifica-luoghi: codfisc
@@ -35,6 +36,6 @@ mcc:
 	cmake --build $(MONICELLI_SRC)/build --target install
 
 clean:
-	rm -f antani codfisc
+	rm -f ordina codfisc
 
-.PHONY: test verifica-luoghi luoghi mcc clean
+.PHONY: all test verifica-luoghi luoghi mcc clean
