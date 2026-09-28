@@ -36,6 +36,61 @@ blinda la supercazzola Necchi leggi o scherziamo?
   e velocità di esecuzione
   vaffanzum valore!
 
+bituma 'Lei ha clacsonato! Calcolo del codice fiscale.\nRisponda alle domande; :q per uscire.\n'
+blinda la supercazzola msgBenvenuto o scherziamo?
+  brematurata la supercazzola scrivi8 con 76, 101, 105, 32, 104, 97, 32, 99 o scherziamo?
+  brematurata la supercazzola scrivi8 con 108, 97, 99, 115, 111, 110, 97, 116 o scherziamo?
+  brematurata la supercazzola scrivi8 con 111, 33, 32, 67, 97, 108, 99, 111 o scherziamo?
+  brematurata la supercazzola scrivi8 con 108, 111, 32, 100, 101, 108, 32, 99 o scherziamo?
+  brematurata la supercazzola scrivi8 con 111, 100, 105, 99, 101, 32, 102, 105 o scherziamo?
+  brematurata la supercazzola scrivi8 con 115, 99, 97, 108, 101, 46, 10, 82 o scherziamo?
+  brematurata la supercazzola scrivi8 con 105, 115, 112, 111, 110, 100, 97, 32 o scherziamo?
+  brematurata la supercazzola scrivi8 con 97, 108, 108, 101, 32, 100, 111, 109 o scherziamo?
+  brematurata la supercazzola scrivi8 con 97, 110, 100, 101, 59, 32, 58, 113 o scherziamo?
+  brematurata la supercazzola scrivi8 con 32, 112, 101, 114, 32, 117, 115, 99 o scherziamo?
+  brematurata la supercazzola scrivi8 con 105, 114, 101, 46, 10, 0, 0, 0 o scherziamo?
+
+bituma 'Arrivederci.\n'
+blinda la supercazzola msgArrivederci o scherziamo?
+  brematurata la supercazzola scrivi8 con 65, 114, 114, 105, 118, 101, 100, 101 o scherziamo?
+  brematurata la supercazzola scrivi8 con 114, 99, 105, 46, 10, 0, 0, 0 o scherziamo?
+
+bituma 'Codice fiscale: '
+blinda la supercazzola msgCodice o scherziamo?
+  brematurata la supercazzola scrivi8 con 67, 111, 100, 105, 99, 101, 32, 102 o scherziamo?
+  brematurata la supercazzola scrivi8 con 105, 115, 99, 97, 108, 101, 58, 32 o scherziamo?
+
+bituma Prompt della domanda q (1-6) della modalita' guidata.
+blinda la supercazzola prompt con q Necchi o scherziamo?
+  che cos'è q?
+    1:
+      bituma 'Cognome: '
+      brematurata la supercazzola scrivi8 con 67, 111, 103, 110, 111, 109, 101, 58 o scherziamo?
+      brematurata la supercazzola scrivi8 con 32, 0, 0, 0, 0, 0, 0, 0 o scherziamo?
+    o magari 2:
+      bituma 'Nome: '
+      brematurata la supercazzola scrivi8 con 78, 111, 109, 101, 58, 32, 0, 0 o scherziamo?
+    o magari 3:
+      bituma 'Sesso (M/F): '
+      brematurata la supercazzola scrivi8 con 83, 101, 115, 115, 111, 32, 40, 77 o scherziamo?
+      brematurata la supercazzola scrivi8 con 47, 70, 41, 58, 32, 0, 0, 0 o scherziamo?
+    o magari 4:
+      bituma 'Data di nascita (GG/MM/AAAA): '
+      brematurata la supercazzola scrivi8 con 68, 97, 116, 97, 32, 100, 105, 32 o scherziamo?
+      brematurata la supercazzola scrivi8 con 110, 97, 115, 99, 105, 116, 97, 32 o scherziamo?
+      brematurata la supercazzola scrivi8 con 40, 71, 71, 47, 77, 77, 47, 65 o scherziamo?
+      brematurata la supercazzola scrivi8 con 65, 65, 65, 41, 58, 32, 0, 0 o scherziamo?
+    o magari 5:
+      bituma 'Luogo di nascita: '
+      brematurata la supercazzola scrivi8 con 76, 117, 111, 103, 111, 32, 100, 105 o scherziamo?
+      brematurata la supercazzola scrivi8 con 32, 110, 97, 115, 99, 105, 116, 97 o scherziamo?
+      brematurata la supercazzola scrivi8 con 58, 32, 0, 0, 0, 0, 0, 0 o scherziamo?
+    o magari 6:
+      bituma 'Provincia: '
+      brematurata la supercazzola scrivi8 con 80, 114, 111, 118, 105, 110, 99, 105 o scherziamo?
+      brematurata la supercazzola scrivi8 con 97, 58, 32, 0, 0, 0, 0, 0 o scherziamo?
+  e velocità di esecuzione
+
 bituma Messaggio d'errore n. Modo 0 (riga): 'ERRORE: testo\n'. Modo 1 (guidata): 'Testo.\n' con l'iniziale maiuscola.
 blinda la supercazzola errore con n Necchi, modo Necchi o scherziamo?
   voglio maiuscola, Necchi come se fosse 0
@@ -373,9 +428,22 @@ bituma [SEZIONE: dichiarazioni]
   voglio r, Necchi come se fosse 0
   voglio n, Necchi come se fosse 0
   voglio esci, Necchi come se fosse 0
+bituma [SEZIONE: modo]
+bituma Prima riga vuota (anche \r\n): modalita' guidata. Altrimenti il primo byte resta in sospeso per la modalita' riga.
+  byte come se fosse brematurata la supercazzola leggi o scherziamo?
+bituma BOM UTF-8 (EF BB BF) in testa ai file salvati da alcuni editor Windows: si salta.
+  che cos'è byte? 239: brematurata la supercazzola leggi o scherziamo? brematurata la supercazzola leggi o scherziamo? byte come se fosse brematurata la supercazzola leggi o scherziamo? e velocità di esecuzione
+  che cos'è byte? 13: byte come se fosse brematurata la supercazzola leggi o scherziamo? e velocità di esecuzione
+  che cos'è byte?
+    10: modo come se fosse 1 brematurata la supercazzola msgBenvenuto o scherziamo?
+    o tarapia tapioco: sospeso come se fosse byte
+  e velocità di esecuzione
   stuzzica
 bituma [SEZIONE: inizio riga]
-    campo come se fosse 1
+    che cos'è modo?
+      1: brematurata la supercazzola prompt con q o scherziamo? campo come se fosse q
+      o tarapia tapioco: campo come se fosse 1
+    e velocità di esecuzione
     nRiga come se fosse 0
     fineRiga come se fosse 0
     prov come se fosse 0
@@ -556,5 +624,58 @@ bituma Una riga vuota a fine input non e' una persona: si esce senza stampare.
             e velocità di esecuzione
         e velocità di esecuzione
         che cos'è fineInput? 1: continua come se fosse 0 e velocità di esecuzione
+bituma [SEZIONE: guidata]
+      o tarapia tapioco:
+        esci come se fosse 0
+        che cos'è nRiga? 0: che cos'è fineInput? 1: esci come se fosse 2 e velocità di esecuzione e velocità di esecuzione
+        che cos'è esci?
+          0:
+            che cos'è nByte? 2: che cos'è primo? 58: che cos'è secondo? 113: esci come se fosse 1 o magari 81: esci come se fosse 1 e velocità di esecuzione e velocità di esecuzione e velocità di esecuzione
+            che cos'è q? 1: che cos'è nByte? 0: esci come se fosse 1 e velocità di esecuzione e velocità di esecuzione
+        e velocità di esecuzione
+        che cos'è esci?
+          2:
+            brematurata la supercazzola aCapo o scherziamo?
+            brematurata la supercazzola msgArrivederci o scherziamo?
+            continua come se fosse 0
+          o magari 1:
+            brematurata la supercazzola msgArrivederci o scherziamo?
+            continua come se fosse 0
+          o tarapia tapioco:
+            n come se fosse 0
+            che cos'è q?
+              1: che cos'è errCog? 1: n come se fosse 1 e velocità di esecuzione
+              o magari 2: che cos'è errNom? 1: n come se fosse 2 e velocità di esecuzione
+              o magari 3: che cos'è errSes? 1: n come se fosse 3 e velocità di esecuzione
+              o magari 4: che cos'è errDat? 1: n come se fosse 4 e velocità di esecuzione
+              o magari 5: che cos'è errLuo? 1: n come se fosse 5 e velocità di esecuzione
+              o magari 6:
+                che cos'è errPro? 1: n come se fosse 6 e velocità di esecuzione
+                che cos'è np? 0: n come se fosse 6 e velocità di esecuzione
+            e velocità di esecuzione
+            che cos'è n?
+              0:
+                che cos'è q?
+                  minore di 5: q come se fosse q più 1
+                  o tarapia tapioco:
+                    che cos'è q? 5: prov come se fosse 0 e velocità di esecuzione
+                    r come se fosse brematurata la supercazzola luogo con hL, data, prov o scherziamo?
+                    che cos'è r?
+                      maggiore di 0:
+                        brematurata la supercazzola msgCodice o scherziamo?
+                        brematurata la supercazzola stampaCodice con k1, k2, k3, k4, k5, k6, nascA, nascM, nascG, sesso, r o scherziamo?
+                        q come se fosse 1
+                      o magari -2:
+                        che cos'è q?
+                          5: q come se fosse 6
+                          o tarapia tapioco: brematurata la supercazzola errore con 7, 1 o scherziamo? q come se fosse 5
+                        e velocità di esecuzione
+                      o magari -1: brematurata la supercazzola errore con 5, 1 o scherziamo? q come se fosse 5
+                      o tarapia tapioco: brematurata la supercazzola errore con 8, 1 o scherziamo? q come se fosse 5
+                    e velocità di esecuzione
+                e velocità di esecuzione
+              o tarapia tapioco: brematurata la supercazzola errore con n, 1 o scherziamo?
+            e velocità di esecuzione
+        e velocità di esecuzione
     e velocità di esecuzione
   e brematura anche, se continua maggiore di 0
