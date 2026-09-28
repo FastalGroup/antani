@@ -1,13 +1,21 @@
 #!/bin/sh
-# Esegue ogni tests/<prefisso>*.in su ./antani e confronta lo stdout con il .out atteso.
+# Esegue ogni tests/<dir>/<prefisso>*.in sul programma e confronta lo stdout con il .out atteso.
+# Uso: tests/run.sh [codfisc] [prefisso]. Senza "codfisc" prova ./antani sui test in tests/.
 cd "$(dirname "$0")/.." || exit 1
+programma=./antani
+cartella=tests
+if [ "${1:-}" = codfisc ]; then
+  programma=./codfisc
+  cartella=tests/codfisc
+  shift
+fi
 pass=0
 fail=0
-for input in tests/${1:-}*.in; do
+for input in "$cartella"/${1:-}*.in; do
   [ -e "$input" ] || continue
   expected="${input%.in}.out"
   actual=$(mktemp)
-  ./antani < "$input" > "$actual"
+  "$programma" < "$input" > "$actual"
   if cmp -s "$expected" "$actual"; then
     pass=$((pass + 1))
   else
