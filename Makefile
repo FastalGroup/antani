@@ -9,6 +9,11 @@ antani: src/antani.mc
 test: antani
 	./tests/run.sh
 
+luoghi:
+	curl -fsSL -A "Mozilla/5.0" -o dati/ANPR_archivio_comuni.csv https://www.anagrafenazionale.interno.it/wp-content/uploads/ANPR_archivio_comuni.csv
+	curl -fsSL -A "Mozilla/5.0" -o dati/tabella_2_statiesteri.xlsx https://www.anagrafenazionale.interno.it/wp-content/uploads/tabella_2_statiesteri.xlsx
+	python3 tools/importa-luoghi.py
+
 mcc:
 	test -d $(MONICELLI_SRC) || git clone --depth 1 https://github.com/esseks/monicelli $(MONICELLI_SRC)
 	git -C $(MONICELLI_SRC) fetch --depth 1 origin $(MONICELLI_REV)
@@ -19,4 +24,4 @@ mcc:
 clean:
 	rm -f antani
 
-.PHONY: test mcc clean
+.PHONY: test luoghi mcc clean
